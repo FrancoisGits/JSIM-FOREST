@@ -8,13 +8,13 @@
   <!-- Informations du projet -->
   <!-- =============================================================== -->
   <!-- ===== Informations Maven ===== -->
-  <groupId>org.cesi.jsim-forest</groupId>
-  <artifactId>jsim-forest</artifactId>
+  <groupId>org.cesi.jsimforest</groupId>
+  <artifactId>jsimforest</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <!-- ===== Informations générales ===== -->
-  <name>jsim-forest</name>
+  <name>jsimforest</name>
   <description>
     Simulation du développement de Forêts avec évenements indésirables
   </description>
@@ -56,58 +56,20 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
           <!-- Plugin responsable de la génération du fichier JAR -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
+          <configuration>
+            <archive>
+              <!-- Création du Manifest pour la définition de la classe Main -->
+              <manifest>
+                <mainClass>org.cesi.jsimforest.Main</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <!-- Création du Manifest pour la définition de la classe Main -->
-            <manifest>
-              <mainClass>org.exemple.demo.App</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 </project>
