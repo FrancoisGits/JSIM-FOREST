@@ -28,6 +28,25 @@ public class Grid {
     }
 
     /**
+     * Method to get a arraylist of the neightbors cells of one cell
+     *
+     * @return arrayList of Cells
+     */
+    public ArrayList<Cell> getNeighborsOfOneCell(int coordXCellTarget, int coordYCellTarget) {
+        ArrayList<Cell> neighborsList = new ArrayList<>();
+        for(int i=coordXCellTarget-1;i<=coordXCellTarget+1;i++){
+            if(i >= 0 && i < this.getMatrix().length){
+                for(int j=coordYCellTarget-1;j<=coordYCellTarget+1;j++) {
+                    if(j >= 0 && j < this.getMatrix()[i].length && (i != coordXCellTarget || j != coordYCellTarget)) {
+                        neighborsList.add(matrix[i][j]);
+                    }
+                }
+            }
+        }
+        return neighborsList;
+    }
+
+    /**
      * Check if a number is sup or equal to 2 - throw Exception if not
      *
      * @param nbr integer
@@ -40,7 +59,6 @@ public class Grid {
             throw new IllegalArgumentException("Nbr must be superior or equal to 2");
         }
     }
-
 
     public Cell[][] getMatrix() { return matrix; }
 
@@ -60,50 +78,3 @@ public class Grid {
         }
     }
 }
-
-// A garder pour le moment si on doit repasser sur des arraysLists
-    /*
-    private ArrayList<ArrayList<Cell>> matrix;
-
-    public Grid(int width, int height) {
-        setHeight(height);
-        setWidth(width);
-
-        //ArrayList<ArrayList<Cell>> matrix = new ArrayList<>();
-        for(int i=0;i<height;i++){
-            matrix.add(new ArrayList<Cell>());
-            ArrayList<Cell> line = matrix.get(i);
-            for(int j=0;j<width;j++){
-                line.add(new Cell(i, j));
-            }
-        }
-        System.out.println("Matrix : ");
-        System.out.println(matrix);
-        System.out.println(matrix.get(1).get(0));
-        System.out.println(matrix.get(1).get(0).getCoordX());
-        System.out.println(matrix.get(1).get(0).getCoordY());
-
-    }
-
-    public ArrayList<ArrayList<Cell>> getMatrix() {
-        return matrix;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-}
-*/

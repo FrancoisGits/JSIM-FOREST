@@ -44,8 +44,7 @@ public class Simulation {
 
         for(int i=0;i<this.getGrid().getRow();i++){
             for(int j=0;j<this.getGrid().getColumn();j++) {
-
-                this.getGrid().getMatrix()[i][j].getNeighbors();
+                this.getGrid().getNeighborsOfOneCell(i,j);
 
             }
         }

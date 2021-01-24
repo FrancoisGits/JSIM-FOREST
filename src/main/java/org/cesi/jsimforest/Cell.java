@@ -25,7 +25,7 @@ public class Cell {
     }
 
     /**
-     * Cell Constructor - Overload
+     * Cell Constructor - Overload - can set the cell's state
      *
      * @param coordX Coordinate of X axis
      * @param coordY Coordinate of Y axis
@@ -38,15 +38,6 @@ public class Cell {
         this.age = 0;
     }
 
-    /**
-     * Method to get a arraylist of the neightbors cells of one cell
-     *
-     * @return arrayList
-     */
-    public ArrayList getNeighbors() {
-        ArrayList<Cell> neighborsList = new ArrayList<>();
-        return neighborsList;
-    }
 
     /**
      * Method to get informations (id, coordinates, state) on the cell
