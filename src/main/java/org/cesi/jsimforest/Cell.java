@@ -3,6 +3,7 @@ package org.cesi.jsimforest;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.EnumMap;
 
 public class Cell {
 
@@ -36,6 +37,30 @@ public class Cell {
         this.coordY = coordY;
         this.state = state;
         this.age = 0;
+    }
+
+    /**
+     * Method to try to evolve the cell to a new state
+     *
+     * @param neighborsStatesNumbers - the number of each neighbors cell's state
+     */
+    public void isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
+        // deuxieme ligne à modifier quand le switch parcourera tous les elements de l'enum, on est pas censé valoriser newState avec actual state des le départ
+        State actualState = this.getState();
+        State newState = actualState;
+        int age = this.getAge();
+        switch (actualState) {
+            case empty:
+                int treeCount = neighborsStatesNumbers.get(State.tree);
+                int bushCount = neighborsStatesNumbers.get(State.bush);
+                if (treeCount >= 2 || bushCount >= 3 || (treeCount == 1 && bushCount == 2)) {
+                    newState = State.youngTree;
+                } else {
+                    newState = actualState;
+                }
+
+        }
+        this.setState(newState);
     }
 
 

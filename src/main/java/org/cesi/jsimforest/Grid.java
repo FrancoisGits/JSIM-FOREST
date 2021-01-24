@@ -3,6 +3,10 @@ package org.cesi.jsimforest;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.EnumMap;
 
 public class Grid {
 
@@ -28,7 +32,7 @@ public class Grid {
     }
 
     /**
-     * Method to get a arraylist of the neightbors cells of one cell
+     * Method to get an arraylist of the neighbors cells of one cell
      *
      * @return arrayList of Cells
      */
@@ -44,6 +48,36 @@ public class Grid {
             }
         }
         return neighborsList;
+    }
+
+    /**
+     * Method to get the states of the neighbors cells
+     *
+     * @param cells - arrayslist of neighbors cells
+     * @return states - arraysList of state of neighbors cells
+     */
+    public List<State> getStateOfNeighborsCell(ArrayList<Cell> cells) {
+        List<State> statesList = new ArrayList<>();
+        for (Cell c: cells) {
+            statesList.add(c.getState());
+        }
+        return statesList;
+    }
+
+    /**
+     * Method to get the number of each states of the neighbors cells
+     *
+     * @param stateList - the states list of neighbors cells
+     * @return eachStateNumber - Map of numbers of occurences of each state int the list. Association (State->number)
+     */
+    public EnumMap<State, Integer>  getNeighborsStatesCount(List<State> stateList) {
+        EnumMap<State, Integer> eachStateNumber = new EnumMap<>(State.class);
+        int statesCount;
+        for(State state : State.values()) {
+            statesCount = Collections.frequency(stateList, state);
+            eachStateNumber.put(state, statesCount);
+        }
+        return eachStateNumber;
     }
 
     /**

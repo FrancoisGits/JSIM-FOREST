@@ -1,6 +1,7 @@
 package org.cesi.jsimforest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +32,23 @@ public class Simulation {
      */
     public void process() {
         while(step <= this.numberSteps) {
+            System.out.println("Matrix : ");
+            System.out.println(Arrays.deepToString(this.getGrid().getMatrix()));
+            System.out.println("Step : " + this.getStep());
+            System.out.println("Liste Cells : ");
+            for(int i = 0;i<this.getGrid().getMatrix().length;i++) {
+                for(int j=0;j<this.getGrid().getMatrix()[0].length;j++) {
+                    System.out.println(this.getGrid().getMatrix()[i][j].infoCell());
+                }
+            }
+            int x = 1;
+            int y = 2;
+            System.out.println("Cell target : ");
+            System.out.println(this.getGrid().getMatrix()[x][y].infoCell());
+            System.out.println("Voisines de Cell target : ");
+            System.out.println(this.getGrid().getNeighborsOfOneCell(x,y));
+            System.out.println("Cell had : " + this.getGrid().getNeighborsOfOneCell(x,y).size() + " neighbors");
+            System.out.println("voisines states : " + this.getGrid().getStateOfNeighborsCell(this.getGrid().getNeighborsOfOneCell(x,y)));
             this.processOneStep();
         }
     }
@@ -40,17 +58,16 @@ public class Simulation {
      *
      */
     public void processOneStep() {
-        this.step += 1;
 
         for(int i=0;i<this.getGrid().getRow();i++){
             for(int j=0;j<this.getGrid().getColumn();j++) {
-                this.getGrid().getNeighborsOfOneCell(i,j);
-
+                // the cell try to evolve
+                this.getGrid().getMatrix()[i][j].isEvolving(this.getGrid().getNeighborsStatesCount(this.getGrid().getStateOfNeighborsCell(this.getGrid().getNeighborsOfOneCell(i,j))));
+                // the cell age is up by one
+                this.getGrid().getMatrix()[i][j].setAge(this.getGrid().getMatrix()[i][j].getAge() + 1);
             }
         }
-
-
-
+        this.step += 1;
     }
 
     /**
