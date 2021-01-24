@@ -61,10 +61,11 @@ public class Simulation {
 
         for(int i=0;i<this.getGrid().getRow();i++){
             for(int j=0;j<this.getGrid().getColumn();j++) {
-                // the cell try to evolve
-                this.getGrid().getMatrix()[i][j].isEvolving(this.getGrid().getNeighborsStatesCount(this.getGrid().getStateOfNeighborsCell(this.getGrid().getNeighborsOfOneCell(i,j))));
                 // the cell age is up by one
                 this.getGrid().getMatrix()[i][j].setAge(this.getGrid().getMatrix()[i][j].getAge() + 1);
+                // the cell try to evolve
+                this.getGrid().getMatrix()[i][j].isEvolving(this.getGrid().getNeighborsStatesCount(this.getGrid().getStateOfNeighborsCell(this.getGrid().getNeighborsOfOneCell(i,j))));
+
             }
         }
         this.step += 1;

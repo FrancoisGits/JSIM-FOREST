@@ -45,20 +45,30 @@ public class Cell {
      * @param neighborsStatesNumbers - the number of each neighbors cell's state
      */
     public void isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
-        // deuxieme ligne à modifier quand le switch parcourera tous les elements de l'enum, on est pas censé valoriser newState avec actual state des le départ
         State actualState = this.getState();
         State newState = actualState;
         int age = this.getAge();
+        int treeCount = neighborsStatesNumbers.get(State.tree);
+        int bushCount = neighborsStatesNumbers.get(State.bush);
         switch (actualState) {
             case empty:
-                int treeCount = neighborsStatesNumbers.get(State.tree);
-                int bushCount = neighborsStatesNumbers.get(State.bush);
                 if (treeCount >= 2 || bushCount >= 3 || (treeCount == 1 && bushCount == 2)) {
                     newState = State.youngTree;
-                } else {
-                    newState = actualState;
+                    this.setAge(0);
                 }
-
+                break;
+            case youngTree:
+                if (treeCount <= 3 && bushCount <= 3) {
+                    newState = State.bush;
+                    this.setAge(0);
+                }
+                break;
+            case bush:
+                if(age >= 2) {
+                    newState = State.tree;
+                    this.setAge(0);
+                }
+                break;
         }
         this.setState(newState);
     }
@@ -70,7 +80,7 @@ public class Cell {
      * @return String
      */
     public String infoCell() {
-        String infos = "Cell : " + this.toString() + " CoordX : " + this.getCoordX() + " CoordY : " + this.getCoordY() + " State : " + this.state;
+        String infos = "Cell : " + this.toString() + "| CoordX : " + this.getCoordX() + "| CoordY : " + this.getCoordY() + "| State : " + this.state + "| Age :" + this.getAge();
         return infos;
     }
 
