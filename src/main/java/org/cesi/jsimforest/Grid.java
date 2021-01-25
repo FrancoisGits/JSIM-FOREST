@@ -39,9 +39,9 @@ public class Grid {
     public ArrayList<Cell> getNeighborsOfOneCell(int coordXCellTarget, int coordYCellTarget) {
         ArrayList<Cell> neighborsList = new ArrayList<>();
         for(int i=coordXCellTarget-1;i<=coordXCellTarget+1;i++){
-            if(i >= 0 && i < this.getMatrix().length){
+            if(i >= 0 && i < getMatrix().length){
                 for(int j=coordYCellTarget-1;j<=coordYCellTarget+1;j++) {
-                    if(j >= 0 && j < this.getMatrix()[i].length && (i != coordXCellTarget || j != coordYCellTarget)) {
+                    if(j >= 0 && j < getMatrix()[i].length && (i != coordXCellTarget || j != coordYCellTarget)) {
                         neighborsList.add(matrix[i][j]);
                     }
                 }

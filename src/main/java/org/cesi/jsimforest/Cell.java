@@ -44,33 +44,30 @@ public class Cell {
      *
      * @param neighborsStatesNumbers - the number of each neighbors cell's state
      */
-    public void isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
-        State actualState = this.getState();
+    public State isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
+        State actualState = getState();
         State newState = actualState;
-        int age = this.getAge();
+        int age = getAge();
         int treeCount = neighborsStatesNumbers.get(State.tree);
         int bushCount = neighborsStatesNumbers.get(State.bush);
         switch (actualState) {
             case empty:
                 if (treeCount >= 2 || bushCount >= 3 || (treeCount == 1 && bushCount == 2)) {
                     newState = State.youngTree;
-                    this.setAge(0);
                 }
                 break;
             case youngTree:
                 if (treeCount <= 3 && bushCount <= 3) {
                     newState = State.bush;
-                    this.setAge(0);
                 }
                 break;
             case bush:
                 if(age >= 2) {
                     newState = State.tree;
-                    this.setAge(0);
                 }
                 break;
         }
-        this.setState(newState);
+        return newState;
     }
 
 
@@ -80,7 +77,7 @@ public class Cell {
      * @return String
      */
     public String infoCell() {
-        String infos = "Cell : " + this.toString() + "| CoordX : " + this.getCoordX() + "| CoordY : " + this.getCoordY() + "| State : " + this.state + "| Age :" + this.getAge();
+        String infos = "Cell : " + toString() + "| CoordX : " + getCoordX() + "| CoordY : " + getCoordY() + "| State : " + getState() + "| Age :" + getAge();
         return infos;
     }
 
