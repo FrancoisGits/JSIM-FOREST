@@ -10,6 +10,7 @@ public class Main
 {
     public static void main( String[] args )
     {
+        Client.launchClient();
         System.out.println( "Hello World!" );
         Configuration config = new Configuration();
         Simulation sim = new Simulation(config);

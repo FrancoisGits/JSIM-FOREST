@@ -1,9 +1,12 @@
-org/cesi/jsimforest/Mode.class
 org/cesi/jsimforest/Grid.class
 org/cesi/jsimforest/Client.class
 org/cesi/jsimforest/Cell.class
-org/cesi/jsimforest/Simulation.class
-org/cesi/jsimforest/CellType.class
+org/cesi/jsimforest/State.class
 org/cesi/jsimforest/Main.class
 org/cesi/jsimforest/Configuration.class
 org/cesi/jsimforest/Health.class
+org/cesi/jsimforest/Mode.class
+org/cesi/jsimforest/Simulation$1.class
+org/cesi/jsimforest/Simulation.class
+org/cesi/jsimforest/CellType.class
+org/cesi/jsimforest/Cell$1.class
