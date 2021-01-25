@@ -7,22 +7,18 @@ import java.util.List;
 
 public class Simulation {
 
-    private int numberSteps;
-    private int nextGridRowNbr;
-    private int nextGridColumnNbr;
+    private Configuration config;
     private Grid grid;
     private int step;
 
     /**
      * Simulation Constructor
      *
-     * @param numberSteps How many steps the simulation is going to process
-     * @param nextGridRowNbr Number of row in the next grid built by the simulation
-     * @param nextGridColumnNbr Number of column in the next grid built by the simulation
+     * @param config - the config that the simulation gonna use to run
      */
-    public Simulation(int numberSteps, int nextGridRowNbr, int nextGridColumnNbr) {
-        this.grid = new Grid(nextGridRowNbr, nextGridColumnNbr);
-        this.numberSteps = numberSteps;
+    public Simulation(Configuration config) {
+        this.config = config;
+        this.grid = new Grid(config.getRowNumber(), config.getColumnNumber());
         this.step = 0;
     }
 
@@ -31,10 +27,9 @@ public class Simulation {
      *
      */
     public void process() {
-        while(step <= this.numberSteps) {
+        while(step <= config.getStepsNumber()) {
             System.out.println("Matrix : ");
-            System.out.println(Arrays.deepToString(this.getGrid().getMatrix()));
-            System.out.println("Step : " + this.getStep());
+            System.out.println(Arrays.deepToString(this.getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));            System.out.println("Step : " + this.getStep());
             System.out.println("Liste Cells : ");
             for(int i = 0;i<this.getGrid().getMatrix().length;i++) {
                 for(int j=0;j<this.getGrid().getMatrix()[0].length;j++) {
@@ -68,7 +63,8 @@ public class Simulation {
                 // the cell age is up by one
                 this.getGrid().getMatrix()[i][j].setAge(getGrid().getMatrix()[i][j].getAge() + 1);
 
-                // the cell try to evolve
+                // the cell try to evolve to a new state and is stored in arrayList corresponding to her future new state
+                // avoid to change the state during the matrix analyse
                 State newState = getGrid().getMatrix()[i][j].isEvolving(getGrid().getNeighborsStatesCount(getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(i,j))));
                 if(newState != getGrid().getMatrix()[i][j].getState()) {
                     switch(newState) {
@@ -85,6 +81,8 @@ public class Simulation {
                 }
             }
         }
+        // every cells in the differents arrayslist get their states changes to the corresponding state.
+        // the cell's age is reboot to 0 if the her state changed.
         for(Cell cell: evolveInYoungTree) {
             cell.setState(State.youngTree);
             cell.setAge(0);
@@ -101,49 +99,8 @@ public class Simulation {
         this.step += 1;
     }
 
-    /**
-     * Method to check if a number is sup or equal to 2 - throw exception if not
-     *
-     * @param nbr integer
-     * @return boolean
-     */
-    public boolean checkNbr(int nbr) {
-        if(nbr <= 2) {
-            return true;
-        } else {
-            throw new IllegalArgumentException("Nbr must be superior or equal to 2");
-        }
-    }
-
     public int getStep() { return step; }
-
-    public void setStep(int step) {
-        if(step >= 1) {
-            this.numberSteps = step;
-        }
-    }
 
     public Grid getGrid() { return grid; }
 
-    public int getNumberSteps() { return numberSteps; }
-
-    public void setNumberSteps(int numberSteps) {
-        if(numberSteps > 0) {
-            this.numberSteps = numberSteps;
-        } else {
-            throw new IllegalArgumentException("Number of step must be superior to 0");
-        }
-    }
-
-    public void setNextGridRowNbr(int nextGridRowNbr) {
-        if(checkNbr(nextGridRowNbr)) {
-            this.nextGridRowNbr = nextGridRowNbr;
-        }
-    }
-
-    public void setNextGridColumnNbr(int nextGridColumnNbr) {
-        if(checkNbr(nextGridColumnNbr)) {
-            this.nextGridColumnNbr = nextGridColumnNbr;
-        }
-    }
 }

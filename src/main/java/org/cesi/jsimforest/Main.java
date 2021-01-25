@@ -11,9 +11,13 @@ public class Main
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        Simulation sim = new Simulation(5,3,3);
-        sim.getGrid().getMatrix()[0][2].setState(State.tree);
-        sim.getGrid().getMatrix()[2][2].setState(State.tree);
+        Configuration config = new Configuration();
+        Simulation sim = new Simulation(config);
+        sim.getGrid().getMatrix()[1][1].setState(State.youngTree);
+        sim.getGrid().getMatrix()[0][1].setState(State.tree);
+        sim.getGrid().getMatrix()[1][0].setState(State.tree);
+        sim.getGrid().getMatrix()[1][2].setState(State.tree);
+        sim.getGrid().getMatrix()[2][1].setState(State.tree);
         sim.process();
     }
 }
