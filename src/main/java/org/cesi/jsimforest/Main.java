@@ -10,6 +10,8 @@ public class Main
 {
     public static void main( String[] args )
     {
+        boolean connectionSuccess = DataBaseConnection.connect();
+        System.out.println("ConnectionSuccess : " + connectionSuccess);
         System.out.println( "Hello World!" );
         Configuration config = new Configuration();
         Simulation sim = new Simulation(config);
