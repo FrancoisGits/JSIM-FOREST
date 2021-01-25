@@ -81,7 +81,7 @@ public class Simulation {
                 }
             }
         }
-        // every cells in the differents arrayslist get their states changes to the corresponding state.
+        // every cells in the differents arrayslist get their states change to the corresponding state.
         // the cell's age is reboot to 0 if the her state changed.
         for(Cell cell: evolveInYoungTree) {
             cell.setState(State.youngTree);

@@ -40,9 +40,10 @@ public class Cell {
     }
 
     /**
-     * Method to try to evolve the cell to a new state
+     * Method to find the new state of a cell
      *
-     * @param neighborsStatesNumbers - the number of each neighbors cell's state
+     * @param neighborsStatesNumbers - EnumMap that gives the number of each neighbors states
+     * @return State - the future new cell's state
      */
     public State isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
         State actualState = getState();
