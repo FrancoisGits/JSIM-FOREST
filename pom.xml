@@ -73,6 +73,7 @@
               </manifest>
             </archive>
           </configuration>
+<<<<<<< HEAD
         </plugin>
         <plugin>
           <groupId>org.openjfx</groupId>
@@ -94,5 +95,10 @@
         </configuration>
       </plugin>
     </plugins>
+=======
+        </plugin>
+      </plugins>
+    </pluginManagement>
+>>>>>>> main
   </build>
 </project>

@@ -1,99 +1,106 @@
 package org.cesi.jsimforest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Simulation {
-    private final Configuration configuration;
+
+    private Configuration config;
     private Grid grid;
     private int step;
 
+    /**
+     * Simulation Constructor
+     *
+     * @param config - the config that the simulation gonna use to run
+     */
     public Simulation(Configuration config) {
-        this.configuration = config;
-        this.grid = new Grid(config.getGridWidth(), config.getGridHeight());
+        this.config = config;
+        this.grid = new Grid(config.getRowNumber(), config.getColumnNumber());
         this.step = 0;
     }
 
-    public Grid getGrid() {
-
-        return this.grid;
-    }
-
-    public int getStep() {
-
-        return this.step;
-    }
-
-    public void run() {
-        while (this.step < this.configuration.getStepsNumber()){
-            // this.step incremented in step()
-            this.step();
+    /**
+     * Method to process the simulation until it reach the maximum steps
+     *
+     */
+    public void process() {
+        while(step <= config.getStepsNumber()) {
+            System.out.println("Matrix : ");
+            System.out.println(Arrays.deepToString(this.getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));            System.out.println("Step : " + this.getStep());
+            System.out.println("Liste Cells : ");
+            for(int i = 0;i<this.getGrid().getMatrix().length;i++) {
+                for(int j=0;j<this.getGrid().getMatrix()[0].length;j++) {
+                    System.out.println(this.getGrid().getMatrix()[i][j].infoCell());
+                }
+            }
+            int x = 1;
+            int y = 2;
+            System.out.println("Cell target : ");
+            System.out.println(this.getGrid().getMatrix()[x][y].infoCell());
+            System.out.println("Voisines de Cell target : ");
+            System.out.println(this.getGrid().getNeighborsOfOneCell(x,y));
+            System.out.println("Cell had : " + this.getGrid().getNeighborsOfOneCell(x,y).size() + " neighbors");
+            System.out.println("voisines states : " + this.getGrid().getStateOfNeighborsCell(this.getGrid().getNeighborsOfOneCell(x,y)));
+            this.processOneStep();
         }
     }
 
-    public void step() {
-        CellType plantType = new CellType("plant", "lightGreen");
-        CellType youngTreeType = new CellType("youngTree", "mediumGreen");
-        CellType treeType = new CellType("tree", "green");
+    /**
+     * Method to process one step during the process of the simulation
+     *
+     */
+    public void processOneStep() {
+        ArrayList<Cell> evolveInYoungTree = new ArrayList<>();
+        ArrayList<Cell> evolveInBush = new ArrayList<>();
+        ArrayList<Cell> evolveInTree = new ArrayList<>();
 
-        ArrayList<ArrayList<Cell>> matrix = this.grid.getMatrix();
-        ArrayList<Cell> toPlant = new ArrayList<>();
-        ArrayList<Cell> toYoungTree = new ArrayList<>();
-        ArrayList<Cell> toTree = new ArrayList<>();
+        for(int i=0;i<getGrid().getMatrix().length;i++){
+            for(int j=0;j<getGrid().getMatrix().length;j++) {
 
+                // the cell age is up by one
+                this.getGrid().getMatrix()[i][j].setAge(getGrid().getMatrix()[i][j].getAge() + 1);
 
-        for (int i = 0; i < matrix.size(); i++){
-            for (int j = 0; j< matrix.get(i).size(); j++){
-                Cell centralCell = matrix.get(i).get(j);
-                List<String> cellTypesList = new ArrayList<>();
-
-                for (int k = i-1; k <= i+1; k++){
-                    if (k >= 0 && k < matrix.size()){
-                        for(int l= j-1; l<= j+1; l++){
-                            // do not add centralCell's cellType to the list
-                            if (i == k && j == l){
-                                continue;
-                            } else if (l >= 0 && l < matrix.get(i).size()){
-                                Cell c = matrix.get(k).get(l);
-                                cellTypesList.add(c.getCellType().getName());
-                            }
-                        }
+                // the cell try to evolve to a new state and is stored in arrayList corresponding to her future new state
+                // avoid to change the state during the matrix analyse
+                State newState = getGrid().getMatrix()[i][j].isEvolving(getGrid().getNeighborsStatesCount(getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(i,j))));
+                if(newState != getGrid().getMatrix()[i][j].getState()) {
+                    switch(newState) {
+                        case youngTree:
+                            evolveInYoungTree.add(getGrid().getMatrix()[i][j]);
+                            break;
+                        case bush:
+                            evolveInBush.add(getGrid().getMatrix()[i][j]);
+                            break;
+                        case tree:
+                            evolveInTree.add(getGrid().getMatrix()[i][j]);
+                            break;
                     }
-                }
-
-                centralCell.setAge(centralCell.getAge() + 1);
-
-                int plantTypeCount = Collections.frequency(cellTypesList, plantType.getName());
-                int youngTreeTypeCount = Collections.frequency(cellTypesList, youngTreeType.getName());
-                int treeTypeCount = Collections.frequency(cellTypesList, treeType.getName());
-
-                if (centralCell.getCellType().getName().equals("youngTree") && centralCell.getAge() == 2){
-                    toTree.add(centralCell);
-                }
-                if (centralCell.getCellType().getName().equals("plant") && (treeTypeCount + youngTreeTypeCount) <= 3){
-                    toYoungTree.add(centralCell);
-                }
-                if (centralCell.getCellType().getName().equals("null") && (
-                        treeTypeCount >=2 || youngTreeTypeCount >= 3 || (treeTypeCount == 1 && youngTreeTypeCount == 2)
-                )){
-                    toPlant.add(centralCell);
                 }
             }
         }
-        for(Cell cell: toPlant){
-            cell.setCellType(plantType);
-            cell.setAge(0);
-        }
-        for (Cell cell: toYoungTree){
-            cell.setCellType(youngTreeType);
-            cell.setAge(0);
-        }
-        for (Cell cell: toTree){
-            cell.setCellType(treeType);
+        // every cells in the differents arrayslist get their states change to the corresponding state.
+        // the cell's age is reboot to 0 if the her state changed.
+        for(Cell cell: evolveInYoungTree) {
+            cell.setState(State.youngTree);
             cell.setAge(0);
         }
 
+        for(Cell cell: evolveInBush) {
+            cell.setState(State.bush);
+            cell.setAge(0);
+        }
+        for(Cell cell: evolveInTree) {
+            cell.setState(State.tree);
+            cell.setAge(0);
+        }
         this.step += 1;
     }
+
+    public int getStep() { return step; }
+
+    public Grid getGrid() { return grid; }
+
 }

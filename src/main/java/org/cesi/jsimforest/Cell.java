@@ -1,120 +1,129 @@
 package org.cesi.jsimforest;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.EnumMap;
+
 public class Cell {
 
-    private CellType cellType;
     private int coordX;
     private int coordY;
-    private int age = 0;
-    private Health health;
-
-    public Cell() {
-    }
+    private State state;
+    private int age;
 
     /**
-     * CellType constructor
+     * Cell Constructor
      *
-     * @param coordX X axis coordinate
-     * @param coordY Y axis coordinate
+     * @param coordX Coordinate of X axis
+     * @param coordY Coordinate of Y axis
      */
     public Cell(int coordX, int coordY) {
         this.coordX = coordX;
         this.coordY = coordY;
-        this.cellType = new CellType();
-        this.health = Health.ok;
+        this.state = State.empty;
+        this.age = 0;
     }
 
     /**
-     * Cell Constructor - overload
+     * Cell Constructor - Overload - can set the cell's state
      *
-     * @param cellType type of Cell
-     * @param coordX   coordinate of cell on the axe X
-     * @param coordY   coordinate of cell on the axe Y
+     * @param coordX Coordinate of X axis
+     * @param coordY Coordinate of Y axis
+     * @param state State of the Cell - enum
      */
-    public Cell(CellType cellType, int coordX, int coordY) {
-        this.cellType = cellType;
+    public Cell(int coordX, int coordY, State state) {
         this.coordX = coordX;
         this.coordY = coordY;
-        this.health = Health.ok;
-    }
-
-    public CellType getCellType() {
-
-        return cellType;
+        this.state = state;
+        this.age = 0;
     }
 
     /**
-     * @param cellType type of Cell
-     */
-    public void setCellType(CellType cellType) {
-        this.cellType = cellType;
-    }
-
-    public int getCoordX() {
-
-        return coordX;
-    }
-
-    /**
-     * @param coordX coordinate of cell on the X axis
-     * @throws IllegalArgumentException if the coordinate X is inferior to 0
-     */
-    public void setCoordX(int coordX) {
-        if (coordX >= 0) {
-            this.coordX = coordX;
-        } else {
-            throw new IllegalArgumentException("coordX must be superior or equal to 0");
-        }
-    }
-
-    public int getCoordY() {
-
-        return coordY;
-    }
-
-    /**
-     * @param coordY coordinate of cell on the Y axis
-     * @throws IllegalArgumentException if the coordinate Y is inferior to 0
-     */
-    public void setCoordY(int coordY) {
-        if (coordY >= 0) {
-            this.coordY = coordY;
-        } else {
-            throw new IllegalArgumentException("coordY must be superior or equal to 0");
-        }
-    }
-
-    /**
+     * Method to find the new state of a cell
      *
-     * @param age How many steps has lived the cell
+     * @param neighborsStatesNumbers - EnumMap that gives the number of each neighbors states
+     * @return State - the future new cell's state
      */
-    public void setAge(int age){
-        if (age >= 0) {
-            this.age = age;
-        } else {
-            throw new IllegalArgumentException("Cell age must be superior or equal to 0");
+    public State isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
+        State actualState = getState();
+        State newState = actualState;
+        int age = getAge();
+        int treeCount = neighborsStatesNumbers.get(State.tree);
+        int bushCount = neighborsStatesNumbers.get(State.bush);
+        switch (actualState) {
+            case empty:
+                if (treeCount >= 2 || bushCount >= 3 || (treeCount == 1 && bushCount == 2)) {
+                    newState = State.youngTree;
+                }
+                break;
+            case youngTree:
+                if (treeCount <= 3 && bushCount <= 3) {
+                    newState = State.bush;
+                }
+                break;
+            case bush:
+                if(age >= 2) {
+                    newState = State.tree;
+                }
+                break;
         }
+        return newState;
     }
 
-    public int getAge() {
 
-        return this.age;
-    }
-
-    public Health getHealth() {
-
-        return health;
+    /**
+     * Method to get informations (id, coordinates, state) on the cell
+     *
+     * @return String
+     */
+    public String infoCell() {
+        String infos = "Cell : " + toString() + "| CoordX : " + getCoordX() + "| CoordY : " + getCoordY() + "| State : " + getState() + "| Age :" + getAge();
+        return infos;
     }
 
     /**
-     * @param health state of cell with a enum
+     * Method to check if a number is sup or equal to 0 - throw exception if not
+     *
+     * @param nbr integer
+     * @return boolean
      */
-    public void setHealth(Health health) {
-        this.health = health;
+    public boolean checkNbr(int nbr) {
+        if(nbr >= 0) {
+            return true;
+        } else {
+            throw new IllegalArgumentException("Nbr must be superior or equal to 0");
+        }
     }
 
-    public boolean equals(Cell cell) {
+    public int getCoordX() { return coordX; }
 
-        return this.cellType.equals(cell.getCellType()) && this.coordX == cell.getCoordX() && this.coordY == cell.getCoordY();
+    public void setCoordX(int coordX) {
+        if (checkNbr(coordX)) {
+            this.coordX = coordX;
+        }
     }
+
+    public int getCoordY() { return coordY; }
+
+    public void setCoordY(int coordY) {
+        if (checkNbr(coordY)) {
+            this.coordY = coordY;
+        }
+    }
+
+    public State getState() { return state; }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public int getAge() { return age; }
+
+    public void setAge(int age) {
+        if (checkNbr(age)) {
+            this.age = age;
+        }
+    }
+
 }
