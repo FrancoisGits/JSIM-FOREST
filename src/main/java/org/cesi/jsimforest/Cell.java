@@ -1,11 +1,13 @@
 package org.cesi.jsimforest;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.sql.Statement;
 import java.util.EnumMap;
+import java.text.MessageFormat;
 
-public class Cell {
+public class Cell implements CRUDInterface {
 
     private int coordX;
     private int coordY;
@@ -39,6 +41,7 @@ public class Cell {
         this.age = 0;
     }
 
+
     /**
      * Method to find the new state of a cell
      *
@@ -70,7 +73,6 @@ public class Cell {
         }
         return newState;
     }
-
 
     /**
      * Method to get informations (id, coordinates, state) on the cell
@@ -125,5 +127,31 @@ public class Cell {
             this.age = age;
         }
     }
+
+    public void saveCell(int idGrid) {
+        String state = "'" + this.getState().toString() + "'";
+        String req = MessageFormat.format("INSERT INTO cells (coordX, coordY, state, age, ID_grid) VALUES ({0}, {1}, {2}, {3}, {4})", this.getCoordX(), this.getCoordY(), state, this.getAge(), idGrid);
+        create(req);
+    }
+
+    public ResultSet readOneCell(int id) {
+        String req = MessageFormat.format("SELECT * FROM cells WHERE ID = {0}", id);
+        return read(req);
+    }
+
+    public ResultSet readAllCellsInOneGrid(int id) {
+        String req = MessageFormat.format("SELECT * FROM cells WHERE ID_GRID = {0}", id);
+        return read(req);
+    }
+
+    public void updateOneCell(int idGrid, int coordX, int coordY) {
+        String req = MessageFormat.format("UPDATE FROM cells SET state = {0}, age = {1} WHERE ID_GRID = {2} AND coordX = {3} AND coordY = {4}", this.getState().toString(), this.getAge(), idGrid, coordX, coordY);
+    }
+
+    public void deleteAllCellsInOneGrid(int idGrid){
+        String req = MessageFormat.format("DELETE FROM cells WHERE ID_GRID = {0}", idGrid);
+    }
+
+
 
 }
