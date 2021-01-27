@@ -31,9 +31,11 @@ public class Grid implements CRUDInterface {
     }
 
     /**
-     * Method to get an arraylist of the neighbors cells of one cell
+     * getNeighborsOfOneCell - Method to get an arraylist of the neighbors cells of one cell
      *
-     * @return arrayList of Cells
+     * @param coordXCellTarget - coordinate X of the cell
+     * @param coordYCellTarget - coordinate Y of the cell
+     * @return arrayList - neighbors of the cell
      */
     public ArrayList<Cell> getNeighborsOfOneCell(int coordXCellTarget, int coordYCellTarget) {
         ArrayList<Cell> neighborsList = new ArrayList<>();
@@ -50,7 +52,7 @@ public class Grid implements CRUDInterface {
     }
 
     /**
-     * Method to get the states of the neighbors cells
+     * getStateofNeighborsCell - Method to get the states of the neighbors cells
      *
      * @param cells - arrayslist of neighbors cells
      * @return states - arraysList of state of neighbors cells
@@ -64,7 +66,7 @@ public class Grid implements CRUDInterface {
     }
 
     /**
-     * Method to get the number of each states of the neighbors cells
+     * getNeighborsStatesCount - Method to get the numbers of each states of the neighbors cells
      *
      * @param stateList - the states list of neighbors cells
      * @return eachStateNumber - Map of numbers of occurences of each state int the list. Association (State->number)
@@ -80,7 +82,7 @@ public class Grid implements CRUDInterface {
     }
 
     /**
-     * Check if a number is sup or equal to 2 - throw Exception if not
+     * checkNumber - Check if a number is sup or equal to 2 - throw Exception if not
      *
      * @param nbr integer
      * @return boolean
@@ -117,6 +119,10 @@ public class Grid implements CRUDInterface {
         }
     }
 
+    /**
+     *  saveGrid - Method to store grid data in DB
+     *
+     */
     public void saveGrid() {
         String req = MessageFormat.format("INSERT INTO grid (height, width) VALUES ({0}, {1})", this.getRow(), this.getColumn());
         create(req);
@@ -132,6 +138,12 @@ public class Grid implements CRUDInterface {
         delete(req);
     }
 
+    /**
+     * getMaxIdGrid - method to get the maximum ID of the grid table in DB
+     *
+     * @return int - max id
+     * @throws SQLException
+     */
     public int getMaxIdGrid() throws SQLException {
         String req = "SELECT MAX(id) as id FROM grid";
         ResultSet res = read(req);

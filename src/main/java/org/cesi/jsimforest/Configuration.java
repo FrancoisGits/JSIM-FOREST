@@ -2,9 +2,8 @@ package org.cesi.jsimforest;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.MessageFormat;
-import java.util.Date;
+
 
 public class Configuration implements CRUDInterface{
 
@@ -14,7 +13,7 @@ public class Configuration implements CRUDInterface{
     private int columnNumber;
 
     /**
-     * Configuration Constructor - Default parameter for test
+     * Configuration Constructor - Default parameters for testing
      *
      */
     public Configuration() {
@@ -73,12 +72,16 @@ public class Configuration implements CRUDInterface{
 
     public void setColumnNumber(int columnNumber) {
         if(columnNumber >= 2) {
-            this.columnNumber = rowNumber;
+            this.columnNumber = columnNumber;
         } else {
             throw new IllegalArgumentException("columnNumber must be superior or equal to 2");
         }
     }
 
+    /**
+     * saveConfiguration - Method to store Configuration Data in DB
+     *
+     */
     public void saveConfiguration() {
         String req = MessageFormat.format("INSERT INTO configuration (stepsPerSecond, stepNumber, rowNumber, columnNumber) VALUES ({0}, {1}, {2}, {3})", this.getStepsPerSecond(), this.getStepsNumber(), this.getRowNumber(), this.getColumnNumber());
         create(req);
@@ -99,6 +102,12 @@ public class Configuration implements CRUDInterface{
         delete(req);
     }
 
+    /**
+     * getMaxIdConfiguration - Method to get the maximum ID of the configuration table in DB
+     *
+     * @return int - maximum ID
+     * @throws SQLException
+     */
     public int getMaxIdConfiguration() throws SQLException {
         String req = "SELECT MAX(id) as id FROM configuration";
         ResultSet res = read(req);

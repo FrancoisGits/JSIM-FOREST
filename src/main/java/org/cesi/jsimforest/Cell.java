@@ -1,9 +1,6 @@
 package org.cesi.jsimforest;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.sql.Statement;
 import java.util.EnumMap;
 import java.text.MessageFormat;
 
@@ -15,7 +12,7 @@ public class Cell implements CRUDInterface {
     private int age;
 
     /**
-     * Cell Constructor
+     * Cell Constructor - Only usefull for testing
      *
      * @param coordX Coordinate of X axis
      * @param coordY Coordinate of Y axis
@@ -43,7 +40,7 @@ public class Cell implements CRUDInterface {
 
 
     /**
-     * Method to find the new state of a cell
+     * isEvolving - Method to find the new state of a cell
      *
      * @param neighborsStatesNumbers - EnumMap that gives the number of each neighbors states
      * @return State - the future new cell's state
@@ -75,9 +72,9 @@ public class Cell implements CRUDInterface {
     }
 
     /**
-     * Method to get informations (id, coordinates, state) on the cell
+     * infoCell - Method to get informations (id, coordinates, state) on the cell
      *
-     * @return String
+     * @return String - infos about one cell (memory adress instance, X, Y, State, age)
      */
     public String infoCell() {
         String infos = "Cell : " + toString() + "| CoordX : " + getCoordX() + "| CoordY : " + getCoordY() + "| State : " + getState() + "| Age :" + getAge();
@@ -85,10 +82,10 @@ public class Cell implements CRUDInterface {
     }
 
     /**
-     * Method to check if a number is sup or equal to 0 - throw exception if not
+     * checkNbr - Method to check if a number is sup or equal to 0 - throw exception if not
      *
-     * @param nbr integer
-     * @return boolean
+     * @param nbr integer - number to test
+     * @return boolean - number is equal or superior to 0
      */
     public boolean checkNbr(int nbr) {
         if(nbr >= 0) {
@@ -128,6 +125,11 @@ public class Cell implements CRUDInterface {
         }
     }
 
+    /**
+     * saveCell - Method to store Cell data in DB
+     *
+     * @param idGrid - id of the grid that the cell belongs to
+     */
     public void saveCell(int idGrid) {
         String state = "'" + this.getState().toString() + "'";
         String req = MessageFormat.format("INSERT INTO cells (coordX, coordY, state, age, ID_grid) VALUES ({0}, {1}, {2}, {3}, {4})", this.getCoordX(), this.getCoordY(), state, this.getAge(), idGrid);

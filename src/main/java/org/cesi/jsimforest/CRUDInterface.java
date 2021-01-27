@@ -6,6 +6,11 @@ import java.sql.Statement;
 
 public interface CRUDInterface {
 
+        /**
+         * create - Method to insert data in db
+         *
+         * @param req - request to execute
+         */
         default void create(String req) {
                 try {
                         Statement stmt = DataBaseConnection.connection.createStatement();
@@ -15,6 +20,11 @@ public interface CRUDInterface {
                 }
         }
 
+        /**
+         * read - Method to select data in db
+         *
+         * @param req - request to execute
+         */
         default ResultSet read(String req) {
                 ResultSet res = null;
                 try {
@@ -26,6 +36,11 @@ public interface CRUDInterface {
                 return res;
         }
 
+        /**
+         * update - Method to update data in db
+         *
+         * @param req - request to execute
+         */
         default void update(String req) {
                 try {
                         Statement stmt = DataBaseConnection.connection.createStatement();
@@ -35,6 +50,11 @@ public interface CRUDInterface {
                 }
         }
 
+        /**
+         * deete - Method to delete data in db
+         *
+         * @param req - request to execute
+         */
         default void delete(String req) {
                 try {
                         Statement stmt = DataBaseConnection.connection.createStatement();

@@ -105,6 +105,11 @@ public class Simulation implements CRUDInterface {
 
     public Configuration getConfig() { return config; }
 
+    /**
+     * saveSimulation - Method to store Simuation Data in DB - useful for testing
+     *
+     * @param name
+     */
     public void saveSimulation(String name) {
         String nameFormat = "'" + name + "'";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -113,6 +118,14 @@ public class Simulation implements CRUDInterface {
         create(req);
     }
 
+    /**
+     * saveSimulation - Overload
+     * Method to store simulation data in DB, giving her a name and the grid/configuration she's linked to
+     *
+     * @param name - name given to the simulation
+     * @param idGrid - grid id that is linked to the simulation
+     * @param idConfig - config id that is linked to the simulation
+     */
     public void saveSimulation(String name, int idGrid, int idConfig) {
         String nameFormat = "'" + name + "'";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -142,6 +155,12 @@ public class Simulation implements CRUDInterface {
         String req = MessageFormat.format("UPDATE FROM simulation SET steps = {0}, name = {1}, insert_time = {2} WHERE ID = {3}", this.getStep(), name, insertTime, id);
     }
 
+    /**
+     * saveEntireSimulation - method to store the entire simulation (config + sim + grid + cells) to store a simulation in DB during the simulation process
+     *
+     * @param name - name given to the simulation
+     * @throws SQLException
+     */
     public void saveEntireSimulation(String name) throws SQLException {
         this.getGrid().saveGrid();
         int nextIdGrid = this.getGrid().getMaxIdGrid();
