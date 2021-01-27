@@ -1,6 +1,11 @@
 package org.cesi.jsimforest;
 
-public class Configuration {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+
+
+public class Configuration implements CRUDInterface{
 
     private int stepsPerSecond;
     private int stepsNumber;
@@ -61,4 +66,46 @@ public class Configuration {
             throw new IllegalArgumentException("columnNumber must be superior or equal to 2");
         }
     }
+
+    /**
+     * saveConfiguration - Method to store Configuration Data in DB
+     *
+     */
+    public void saveConfiguration() {
+        String req = MessageFormat.format("INSERT INTO configuration (stepsPerSecond, stepNumber, rowNumber, columnNumber) VALUES ({0}, {1}, {2}, {3})", this.getStepsPerSecond(), this.getStepsNumber(), this.getRowNumber(), this.getColumnNumber());
+        create(req);
+    }
+
+    public ResultSet readAllConfiguration() {
+        String req = "SELECT * FROM configuration";
+        return read(req);
+    }
+
+    public ResultSet readOneConfiguration(int id) {
+        String req = MessageFormat.format("SELECT stepsPerSecond, stepNumber, rowNumber, columnNumber FROM configuration WHERE ID = {0}", id);
+        return read(req);
+    }
+
+    public void deleteOneConfiguration(int id) {
+        String req = MessageFormat.format("DELETE FROM configuration WHERE ID = {0}", id);
+        delete(req);
+    }
+
+    /**
+     * getMaxIdConfiguration - Method to get the maximum ID of the configuration table in DB
+     *
+     * @return int - maximum ID
+     * @throws SQLException
+     */
+    public int getMaxIdConfiguration() throws SQLException {
+        String req = "SELECT MAX(id) as id FROM configuration";
+        ResultSet res = read(req);
+        int maxIdGrid = 0;
+        while (res.next()) {
+            maxIdGrid = res.getInt("id");
+        }
+        return maxIdGrid;
+    }
+
+
 }

@@ -1,11 +1,11 @@
 package org.cesi.jsimforest;
 
+import java.sql.*;
+import java.text.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-public class Simulation {
+public class Simulation implements CRUDInterface {
 
     private Configuration config;
     private Grid grid;
@@ -102,5 +102,80 @@ public class Simulation {
     public int getStep() { return step; }
 
     public Grid getGrid() { return grid; }
+
+    public Configuration getConfig() { return config; }
+
+    /**
+     * saveSimulation - Method to store Simuation Data in DB - useful for testing
+     *
+     * @param name
+     */
+    public void saveSimulation(String name) {
+        String nameFormat = "'" + name + "'";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String insertTime = "'" + format.format(new java.util.Date()) + "'" ;
+        String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time) VALUES ({0}, {1}, {2})", this.getStep(), nameFormat, insertTime);
+        create(req);
+    }
+
+    /**
+     * saveSimulation - Overload
+     * Method to store simulation data in DB, giving her a name and the grid/configuration she's linked to
+     *
+     * @param name - name given to the simulation
+     * @param idGrid - grid id that is linked to the simulation
+     * @param idConfig - config id that is linked to the simulation
+     */
+    public void saveSimulation(String name, int idGrid, int idConfig) {
+        String nameFormat = "'" + name + "'";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String insertTime = "'" + format.format(new java.util.Date()) + "'" ;
+        String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time, ID_Configuration, ID_Grid) VALUES ({0}, {1}, {2}, {3} ,{4})", this.getStep(), nameFormat, insertTime, idConfig, idGrid);
+        create(req);
+    }
+
+    public ResultSet readAllSimulation() {
+        String req = "SELECT * FROM simulation";
+        return read(req);
+    }
+
+    public ResultSet readOneSimulation(int id) {
+        String req = MessageFormat.format("SELECT steps, name, insert_time FROM simulation WHERE ID = {0}", id);
+        return read(req);
+    }
+
+    public void deleteOneSimulation(String name, Date insertTime) {
+        String req = MessageFormat.format("DELETE FROM simulation WHERE name LIKE  '{0}' and insertTime = {1}", name, insertTime);
+        delete(req);
+    }
+
+    public void updateOneSimulation(int id, String name) {
+        long millis=System.currentTimeMillis();
+        java.sql.Date insertTime = new java.sql.Date(millis);
+        String req = MessageFormat.format("UPDATE FROM simulation SET steps = {0}, name = {1}, insert_time = {2} WHERE ID = {3}", this.getStep(), name, insertTime, id);
+    }
+
+    /**
+     * saveEntireSimulation - method to store the entire simulation (config + sim + grid + cells) to store a simulation in DB during the simulation process
+     *
+     * @param name - name given to the simulation
+     * @throws SQLException
+     */
+    public void saveEntireSimulation(String name) throws SQLException {
+        this.getGrid().saveGrid();
+        int nextIdGrid = this.getGrid().getMaxIdGrid();
+        for(int i=0;i<this.getGrid().getMatrix().length;i++){
+            for(int j=0;j<this.getGrid().getMatrix()[i].length;j++) {
+                this.getGrid().getMatrix()[i][j].saveCell(nextIdGrid);
+            }
+        }
+        this.getConfig().saveConfiguration();
+        int nextIdConfig = this.getConfig().getMaxIdConfiguration();
+        this.saveSimulation(name, nextIdGrid, nextIdConfig);
+    }
+
+    public void deleteEntireSimulation(String name, Date insertTime) {
+
+    }
 
 }
