@@ -8,17 +8,6 @@ public class Configuration {
     private int columnNumber;
 
     /**
-     * Configuration Constructor - Default parameter for test
-     *
-     */
-    public Configuration() {
-        this.stepsPerSecond = 1;
-        this.stepsNumber = 20;
-        this.rowNumber = 3;
-        this.columnNumber = 3;
-    }
-
-    /**
      * Configuration Constructor - Overload
      *
      * @param stepsPerSecond - number of steps per second for the simulation
@@ -67,7 +56,7 @@ public class Configuration {
 
     public void setColumnNumber(int columnNumber) {
         if(columnNumber >= 2) {
-            this.columnNumber = rowNumber;
+            this.columnNumber = columnNumber;
         } else {
             throw new IllegalArgumentException("columnNumber must be superior or equal to 2");
         }
