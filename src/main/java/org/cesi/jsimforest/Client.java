@@ -15,11 +15,8 @@ public class Client extends Application {
 
     private static final Pane grid = new Pane();
     private static Simulation sim;
-    private static Configuration config;
-    private static Cell cellInfo;
     private static int i;
     private static int j;
-
 
     public static void launchClient() {
         launch();

@@ -1,7 +1,6 @@
 package org.cesi.jsimforest;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 /**
  * Hello world!

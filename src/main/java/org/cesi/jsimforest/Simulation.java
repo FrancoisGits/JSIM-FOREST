@@ -12,7 +12,6 @@ public class Simulation implements CRUDInterface {
 
     private static int step;
     private static Grid grid;
-    private static Client client;
     private static Configuration config;
 
     /**
