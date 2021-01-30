@@ -12,19 +12,6 @@ public class Cell implements CRUDInterface {
     private int age;
 
     /**
-     * Cell Constructor - Only usefull for testing
-     *
-     * @param coordX Coordinate of X axis
-     * @param coordY Coordinate of Y axis
-     */
-    public Cell(int coordX, int coordY) {
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.state = State.empty;
-        this.age = 0;
-    }
-
-    /**
      * Cell Constructor - Overload - can set the cell's state
      *
      * @param coordX Coordinate of X axis
