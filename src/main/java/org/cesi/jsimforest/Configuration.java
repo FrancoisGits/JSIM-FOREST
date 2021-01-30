@@ -61,7 +61,7 @@ public class Configuration implements CRUDInterface{
     public int getRowNumber() { return rowNumber; }
 
     public void setRowNumber(int rowNumber) {
-        if(rowNumber >= 2) {
+        if(rowNumber >= 2 && rowNumber <= 1000){
             this.rowNumber = rowNumber;
         } else {
             throw new IllegalArgumentException("rowNumber must be superior or equal to 2");
@@ -71,7 +71,7 @@ public class Configuration implements CRUDInterface{
     public int getColumnNumber() { return columnNumber; }
 
     public void setColumnNumber(int columnNumber) {
-        if(columnNumber >= 2) {
+        if(columnNumber >= 2 && columnNumber <= 1000) {
             this.columnNumber = columnNumber;
         } else {
             throw new IllegalArgumentException("columnNumber must be superior or equal to 2");

@@ -98,7 +98,7 @@ public class Simulation implements CRUDInterface {
             cell.setState(State.tree);
             cell.setAge(0);
         }
-        Client.initGrid(config.getRowNumber(), config.getColumnNumber());
+        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
         step += 1;
     }
 

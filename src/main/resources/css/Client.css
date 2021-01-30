@@ -2,6 +2,7 @@
     -fx-border-color: black;
     -fx-border-width: 1px;
     -fx-background-color: white;
+    -fx-spacing: 10;
 }
 .burning{
     -fx-border-color: black;
@@ -27,4 +28,12 @@
     -fx-border-color: black;
     -fx-border-width: 1px;
     -fx-background-color: chartreuse;
+}
+.grid{
+    -fx-border-color: purple;
+    -fx-border-width: 2px;
+}
+.scroll{
+    -fx-border-color: yellow;
+    -fx-border-width: 2px;
 }

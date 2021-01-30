@@ -3,8 +3,8 @@ package org.cesi.jsimforest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Client extends Application {
 
-    private static final Pane grid = new Pane();
+    private static final GridPane grid = new GridPane();
     private static Simulation sim;
     private static int i;
     private static int j;
@@ -25,15 +25,15 @@ public class Client extends Application {
     // =======================================
     // *------------ Init Grille ------------*
     // =======================================
-    public static void initGrid(int rowNumber, int columnNumber){
+    public static void updateGrid(int rowNumber, int columnNumber){
         grid.getChildren().clear();
         for(i = 0; i < columnNumber; i++){
             for (j = 0; j < rowNumber; j++){
                 Pane newCell = new Pane();
                 newCell.setId(i + "," + j);
-                newCell.setLayoutX(i*20);
-                newCell.setLayoutY(j*20);
-                newCell.setMinSize(20, 20);
+                newCell.setLayoutX(i * 9);
+                newCell.setLayoutY(j * 9);
+                newCell.setMinSize(9, 9);
                 switch (sim.getGrid().getMatrix()[i][j].getState()) {
                     case empty:
                         newCell.getChildren().clear();
@@ -102,7 +102,7 @@ public class Client extends Application {
                         }
                     }
                 });
-                grid.getChildren().add(newCell);
+                grid.add(newCell, i, j);
             }
         }
     }
@@ -120,7 +120,30 @@ public class Client extends Application {
         // =======================================
         // *----------- Import Grille -----------*
         // =======================================
+        ScrollPane sp = new ScrollPane();
+        sp.pannableProperty().set(true); //Permet de se deplacer avec la souris
+        sp.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        sp.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        sp.getStyleClass().add("scroll");
+        sp.setContent(grid);
+        sp.setLayoutX(45);
+        sp.setLayoutY(90);
+        sp.setMaxSize(910, 910);
+        root.getChildren().add(sp);
+        grid.getStyleClass().add("grid");
         root.getChildren().add(grid);
+        // *--------- Grille par defaut ---------*
+        for(i = 0; i < 100; i++) {
+            for (j = 0; j < 100; j++) {
+                Pane newCell = new Pane();
+                newCell.setLayoutX(i * 9);
+                newCell.setLayoutY(j * 9);
+                newCell.setMinSize(9, 9);
+                newCell.getStyleClass().add("empty");
+                grid.add(newCell, i, j);
+            }
+        }
+
 
         // =======================================
         // *----- Config Fenêtre Simulation -----*

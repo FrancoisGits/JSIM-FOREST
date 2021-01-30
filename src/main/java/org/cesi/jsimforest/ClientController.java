@@ -15,7 +15,7 @@ public class ClientController implements Initializable {
     public TextField textFieldSpeed;
     private static State state;
 
-    Configuration config =  new Configuration(1, 1, 10, 10);
+    Configuration config =  new Configuration(1, 1, 1000, 1000);
     Simulation sim = new Simulation(config);
 
     @Override
@@ -25,12 +25,12 @@ public class ClientController implements Initializable {
 
     public void setWidthGrid(ActionEvent actionEvent) {
         config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
-        Client.initGrid(config.getRowNumber(), config.getColumnNumber());
+        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
     }
 
     public void setHeightGrid(ActionEvent actionEvent) {
         config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
-        Client.initGrid(config.getRowNumber(), config.getColumnNumber());
+        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
     }
 
     public void setStep(ActionEvent actionEvent) {
@@ -78,5 +78,7 @@ public class ClientController implements Initializable {
     }
 
     public void stopButton(ActionEvent actionEvent) {
+        Simulation sim = new Simulation(config);
+        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
     }
 }
