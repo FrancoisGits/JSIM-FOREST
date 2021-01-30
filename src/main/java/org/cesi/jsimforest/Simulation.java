@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class Simulation implements CRUDInterface {
 
@@ -28,7 +29,7 @@ public class Simulation implements CRUDInterface {
     /**
      * Method to process the simulation until it reach the maximum steps
      */
-    public void process() {
+    public void process() throws InterruptedException {
         while (step <= config.getStepsNumber()) {
             System.out.println("Matrix : ");
             System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
@@ -48,6 +49,8 @@ public class Simulation implements CRUDInterface {
             System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
             System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
             processOneStep();
+            TimeUnit.SECONDS.sleep(1);
+            Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
         }
     }
 
@@ -98,7 +101,6 @@ public class Simulation implements CRUDInterface {
             cell.setState(State.tree);
             cell.setAge(0);
         }
-        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
         step += 1;
     }
 

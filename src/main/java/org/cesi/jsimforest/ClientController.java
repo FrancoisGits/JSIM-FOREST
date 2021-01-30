@@ -15,7 +15,7 @@ public class ClientController implements Initializable {
     public TextField textFieldSpeed;
     private static State state;
 
-    Configuration config =  new Configuration(1, 1, 1000, 1000);
+    Configuration config =  new Configuration(1, 1, 10, 10);
     Simulation sim = new Simulation(config);
 
     @Override
@@ -67,7 +67,7 @@ public class ClientController implements Initializable {
 
     public static State getStateSelected() { return state; }
 
-    public void playButton(ActionEvent actionEvent) {
+    public void playButton(ActionEvent actionEvent) throws InterruptedException {
         sim.process();
     }
 
