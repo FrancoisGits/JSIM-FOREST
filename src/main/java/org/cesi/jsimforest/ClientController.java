@@ -1,53 +1,82 @@
 package org.cesi.jsimforest;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
 
-    Configuration configuration =  new Configuration(1, 1, 10, 10);
+    public TextField textFieldHeight;
+    public TextField textFieldWidth;
+    public TextField textFieldStep;
+    public TextField textFieldSpeed;
+    private static State state;
+
+    Configuration config =  new Configuration(1, 1, 10, 10);
+    Simulation sim = new Simulation(config);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ok");
     }
 
-    @FXML
-    private TextField textFieldHeight;
-
-    @FXML
-    private TextField textFieldWidth;
-
     public void setWidthGrid(ActionEvent actionEvent) {
-        configuration.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
-        Client.updateGrid(configuration.getRowNumber(), configuration.getColumnNumber());
+        config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
+        Client.initGrid(config.getRowNumber(), config.getColumnNumber());
     }
 
     public void setHeightGrid(ActionEvent actionEvent) {
-        configuration.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
-        Client.updateGrid(configuration.getRowNumber(), configuration.getColumnNumber());
+        config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
+        Client.initGrid(config.getRowNumber(), config.getColumnNumber());
     }
 
-    public void selectEmpty(ActionEvent actionEvent) {
-        State state = State.empty;
-        System.out.println(state);
+    public void setStep(ActionEvent actionEvent) {
+        config.setStepsNumber(Integer.parseInt(textFieldStep.getText()));
     }
 
-    public void selectTree(ActionEvent actionEvent) {
-        State state = State.tree;
-        System.out.println(state);
+    public void setSpeed(ActionEvent actionEvent) {
+        config.setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
     }
 
-    public void selectInfected(ActionEvent actionEvent) {
-        State state = State.infected;
-        System.out.println(state);
+    public void setSelectedEmpty(ActionEvent actionEvent) {
+        ClientController.state = State.empty;
+    }
+
+    public void setSelectedInfected(ActionEvent actionEvent) {
+        ClientController.state = State.infected;
+    }
+
+    public void setSelectedBurning(ActionEvent actionEvent) {
+        ClientController.state = State.burning;
+    }
+
+    public void setSelectedYoungTree(ActionEvent actionEvent) {
+        ClientController.state = State.youngTree;
+    }
+
+    public void setSelectedBush(ActionEvent actionEvent) {
+        ClientController.state = State.bush;
+    }
+
+    public void setSelectedTree(ActionEvent actionEvent) {
+        ClientController.state = State.tree;
+    }
+
+    public static State getStateSelected() { return state; }
+
+    public void playButton(ActionEvent actionEvent) {
+        sim.process();
+    }
+
+    public void stepButton(ActionEvent actionEvent) {
+    }
+
+    public void pauseButton(ActionEvent actionEvent) {
+    }
+
+    public void stopButton(ActionEvent actionEvent) {
     }
 }

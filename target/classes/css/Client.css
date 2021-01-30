@@ -1,24 +1,30 @@
-.cell{
-    -fx-border-color: black;
-    -fx-border-width: 1px;
-}
 .empty{
     -fx-border-color: black;
     -fx-border-width: 1px;
     -fx-background-color: white;
 }
-.youngTree{
+.burning{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: chartreuse;
+    -fx-background-color: red;
 }
-.bush{
+.infected{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: mediumseagreen;
+    -fx-background-color: purple;
 }
 .tree{
     -fx-border-color: black;
     -fx-border-width: 1px;
     -fx-background-color: green;
+}
+.youngTree{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-background-color: mediumseagreen;
+}
+.bush{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-background-color: chartreuse;
 }

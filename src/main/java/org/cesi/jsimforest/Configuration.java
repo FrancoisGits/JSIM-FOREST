@@ -13,6 +13,17 @@ public class Configuration implements CRUDInterface{
     private int columnNumber;
 
     /**
+     * Configuration Constructor - Default parameters for testing
+     *
+     */
+    public Configuration() {
+        this.stepsPerSecond = 1;
+        this.stepsNumber = 20;
+        this.rowNumber = 3;
+        this.columnNumber = 3;
+    }
+
+    /**
      * Configuration Constructor - Overload
      *
      * @param stepsPerSecond - number of steps per second for the simulation

@@ -1,15 +1,19 @@
 package org.cesi.jsimforest;
 
-import java.sql.*;
-import java.text.*;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Simulation implements CRUDInterface {
 
-    private Configuration config;
-    private Grid grid;
-    private int step;
+    private static int step;
+    private static Grid grid;
+    private static Client client;
+    private static Configuration config;
 
     /**
      * Simulation Constructor
@@ -24,50 +28,49 @@ public class Simulation implements CRUDInterface {
 
     /**
      * Method to process the simulation until it reach the maximum steps
-     *
      */
     public void process() {
-        while(step <= config.getStepsNumber()) {
+        while (step <= config.getStepsNumber()) {
             System.out.println("Matrix : ");
-            System.out.println(Arrays.deepToString(this.getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));            System.out.println("Step : " + this.getStep());
+            System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
+            System.out.println("Step : " + this.getStep());
             System.out.println("Liste Cells : ");
-            for(int i = 0;i<this.getGrid().getMatrix().length;i++) {
-                for(int j=0;j<this.getGrid().getMatrix()[0].length;j++) {
-                    System.out.println(this.getGrid().getMatrix()[i][j].infoCell());
+            for (int i = 0; i < getGrid().getMatrix().length; i++) {
+                for (int j = 0; j < getGrid().getMatrix()[0].length; j++) {
+                    System.out.println(getGrid().getMatrix()[i][j].infoCell());
                 }
             }
             int x = 1;
             int y = 2;
             System.out.println("Cell target : ");
-            System.out.println(this.getGrid().getMatrix()[x][y].infoCell());
+            System.out.println(getGrid().getMatrix()[x][y].infoCell());
             System.out.println("Voisines de Cell target : ");
-            System.out.println(this.getGrid().getNeighborsOfOneCell(x,y));
-            System.out.println("Cell had : " + this.getGrid().getNeighborsOfOneCell(x,y).size() + " neighbors");
-            System.out.println("voisines states : " + this.getGrid().getStateOfNeighborsCell(this.getGrid().getNeighborsOfOneCell(x,y)));
-            this.processOneStep();
+            System.out.println(getGrid().getNeighborsOfOneCell(x, y));
+            System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
+            System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
+            processOneStep();
         }
     }
 
     /**
      * Method to process one step during the process of the simulation
-     *
      */
-    public void processOneStep() {
+    public static void processOneStep() {
         ArrayList<Cell> evolveInYoungTree = new ArrayList<>();
         ArrayList<Cell> evolveInBush = new ArrayList<>();
         ArrayList<Cell> evolveInTree = new ArrayList<>();
 
-        for(int i=0;i<getGrid().getMatrix().length;i++){
-            for(int j=0;j<getGrid().getMatrix().length;j++) {
+        for (int i = 0; i < getGrid().getMatrix().length; i++) {
+            for (int j = 0; j < getGrid().getMatrix().length; j++) {
 
                 // the cell age is up by one
-                this.getGrid().getMatrix()[i][j].setAge(getGrid().getMatrix()[i][j].getAge() + 1);
+                getGrid().getMatrix()[i][j].setAge(getGrid().getMatrix()[i][j].getAge() + 1);
 
                 // the cell try to evolve to a new state and is stored in arrayList corresponding to her future new state
                 // avoid to change the state during the matrix analyse
-                State newState = getGrid().getMatrix()[i][j].isEvolving(getGrid().getNeighborsStatesCount(getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(i,j))));
-                if(newState != getGrid().getMatrix()[i][j].getState()) {
-                    switch(newState) {
+                State newState = getGrid().getMatrix()[i][j].isEvolving(getGrid().getNeighborsStatesCount(getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(i, j))));
+                if (newState != getGrid().getMatrix()[i][j].getState()) {
+                    switch (newState) {
                         case youngTree:
                             evolveInYoungTree.add(getGrid().getMatrix()[i][j]);
                             break;
@@ -83,27 +86,34 @@ public class Simulation implements CRUDInterface {
         }
         // every cells in the differents arrayslist get their states change to the corresponding state.
         // the cell's age is reboot to 0 if the her state changed.
-        for(Cell cell: evolveInYoungTree) {
+        for (Cell cell : evolveInYoungTree) {
             cell.setState(State.youngTree);
             cell.setAge(0);
         }
 
-        for(Cell cell: evolveInBush) {
+        for (Cell cell : evolveInBush) {
             cell.setState(State.bush);
             cell.setAge(0);
         }
-        for(Cell cell: evolveInTree) {
+        for (Cell cell : evolveInTree) {
             cell.setState(State.tree);
             cell.setAge(0);
         }
-        this.step += 1;
+        Client.initGrid(config.getRowNumber(), config.getColumnNumber());
+        step += 1;
     }
 
-    public int getStep() { return step; }
+    public int getStep() {
+        return step;
+    }
 
-    public Grid getGrid() { return grid; }
+    public static Grid getGrid() {
+        return grid;
+    }
 
-    public Configuration getConfig() { return config; }
+    public Configuration getConfig() {
+        return config;
+    }
 
     /**
      * saveSimulation - Method to store Simuation Data in DB - useful for testing
@@ -113,7 +123,7 @@ public class Simulation implements CRUDInterface {
     public void saveSimulation(String name) {
         String nameFormat = "'" + name + "'";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String insertTime = "'" + format.format(new java.util.Date()) + "'" ;
+        String insertTime = "'" + format.format(new java.util.Date()) + "'";
         String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time) VALUES ({0}, {1}, {2})", this.getStep(), nameFormat, insertTime);
         create(req);
     }
@@ -122,14 +132,14 @@ public class Simulation implements CRUDInterface {
      * saveSimulation - Overload
      * Method to store simulation data in DB, giving her a name and the grid/configuration she's linked to
      *
-     * @param name - name given to the simulation
-     * @param idGrid - grid id that is linked to the simulation
+     * @param name     - name given to the simulation
+     * @param idGrid   - grid id that is linked to the simulation
      * @param idConfig - config id that is linked to the simulation
      */
     public void saveSimulation(String name, int idGrid, int idConfig) {
         String nameFormat = "'" + name + "'";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String insertTime = "'" + format.format(new java.util.Date()) + "'" ;
+        String insertTime = "'" + format.format(new java.util.Date()) + "'";
         String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time, ID_Configuration, ID_Grid) VALUES ({0}, {1}, {2}, {3} ,{4})", this.getStep(), nameFormat, insertTime, idConfig, idGrid);
         create(req);
     }
@@ -150,7 +160,7 @@ public class Simulation implements CRUDInterface {
     }
 
     public void updateOneSimulation(int id, String name) {
-        long millis=System.currentTimeMillis();
+        long millis = System.currentTimeMillis();
         java.sql.Date insertTime = new java.sql.Date(millis);
         String req = MessageFormat.format("UPDATE FROM simulation SET steps = {0}, name = {1}, insert_time = {2} WHERE ID = {3}", this.getStep(), name, insertTime, id);
     }
@@ -162,11 +172,11 @@ public class Simulation implements CRUDInterface {
      * @throws SQLException
      */
     public void saveEntireSimulation(String name) throws SQLException {
-        this.getGrid().saveGrid();
-        int nextIdGrid = this.getGrid().getMaxIdGrid();
-        for(int i=0;i<this.getGrid().getMatrix().length;i++){
-            for(int j=0;j<this.getGrid().getMatrix()[i].length;j++) {
-                this.getGrid().getMatrix()[i][j].saveCell(nextIdGrid);
+        getGrid().saveGrid();
+        int nextIdGrid = getGrid().getMaxIdGrid();
+        for (int i = 0; i < getGrid().getMatrix().length; i++) {
+            for (int j = 0; j < getGrid().getMatrix()[i].length; j++) {
+                getGrid().getMatrix()[i][j].saveCell(nextIdGrid);
             }
         }
         this.getConfig().saveConfiguration();
