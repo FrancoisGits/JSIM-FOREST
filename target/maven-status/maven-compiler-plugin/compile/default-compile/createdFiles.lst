@@ -9,6 +9,5 @@ org/cesi/jsimforest/Main.class
 org/cesi/jsimforest/Configuration.class
 org/cesi/jsimforest/Simulation$1.class
 org/cesi/jsimforest/Simulation.class
-org/cesi/jsimforest/CellType.class
 org/cesi/jsimforest/Client$1.class
 org/cesi/jsimforest/Cell$1.class

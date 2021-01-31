@@ -35,8 +35,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <RadioButton mnemonicParsing="false" onAction="#setSelectedTree" text="Arbre" GridPane.valignment="CENTER" />
+            <RadioButton mnemonicParsing="false" onAction="#setSelectedYoungTree" text="Jeune Pousse" GridPane.columnIndex="2" GridPane.valignment="CENTER" />
             <RadioButton mnemonicParsing="false" onAction="#setSelectedBush" text="Buisson" GridPane.columnIndex="1" GridPane.valignment="CENTER" />
-            <RadioButton mnemonicParsing="false" onAction="#setSelectedYoungTree" text="Pousse" GridPane.columnIndex="2" GridPane.valignment="CENTER" />
             <RadioButton mnemonicParsing="false" onAction="#setSelectedBurning" text="Feux" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <RadioButton mnemonicParsing="false" onAction="#setSelectedInfected" text="Infection" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <RadioButton mnemonicParsing="false" onAction="#setSelectedEmpty" text="Vide" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="CENTER" />

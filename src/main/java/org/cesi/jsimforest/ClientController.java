@@ -15,7 +15,7 @@ public class ClientController implements Initializable {
     public TextField textFieldSpeed;
     private static State state;
 
-    Configuration config =  new Configuration(1, 1, 10, 10);
+    Configuration config =  new Configuration(1, 1, 105, 105);
     Simulation sim = new Simulation(config);
 
     @Override
@@ -53,12 +53,12 @@ public class ClientController implements Initializable {
         ClientController.state = State.burning;
     }
 
-    public void setSelectedYoungTree(ActionEvent actionEvent) {
-        ClientController.state = State.youngTree;
-    }
-
     public void setSelectedBush(ActionEvent actionEvent) {
         ClientController.state = State.bush;
+    }
+
+    public void setSelectedYoungTree(ActionEvent actionEvent) {
+        ClientController.state = State.youngTree;
     }
 
     public void setSelectedTree(ActionEvent actionEvent) {
@@ -72,6 +72,7 @@ public class ClientController implements Initializable {
     }
 
     public void stepButton(ActionEvent actionEvent) {
+        sim.processOneStep();
     }
 
     public void pauseButton(ActionEvent actionEvent) {

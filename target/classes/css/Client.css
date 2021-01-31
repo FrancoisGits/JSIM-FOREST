@@ -22,12 +22,12 @@
 .youngTree{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: mediumseagreen;
+    -fx-background-color: chartreuse;
 }
 .bush{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: chartreuse;
+    -fx-background-color: mediumseagreen;
 }
 .grid{
     -fx-border-color: purple;
