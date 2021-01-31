@@ -30,8 +30,8 @@ public class ClientController implements Initializable {
     public TextField textFieldSaveName;
     private static State state;
 
-    private Configuration config =  new Configuration(1, 1, 10, 10);
-    private Simulation sim = new Simulation(config);
+        protected static Configuration config =  new Configuration(1, 1, 10, 10);
+        protected static Simulation sim = new Simulation(config);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,13 +39,13 @@ public class ClientController implements Initializable {
     }
 
     public void setWidthGrid(ActionEvent actionEvent) {
-        config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
-        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
+        sim.getConfig().setRowNumber(Integer.parseInt(textFieldWidth.getText()));
+        Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
     }
 
     public void setHeightGrid(ActionEvent actionEvent) {
-        config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
-        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
+        sim.getConfig().setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
+        Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
     }
 
     public void setStep(ActionEvent actionEvent) {
@@ -53,7 +53,7 @@ public class ClientController implements Initializable {
     }
 
     public void setSpeed(ActionEvent actionEvent) {
-        config.setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
+        sim.getConfig().setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
     }
 
     public void setSelectedEmpty(ActionEvent actionEvent) {
@@ -94,8 +94,8 @@ public class ClientController implements Initializable {
     }
 
     public void stopButton(ActionEvent actionEvent) {
-        Simulation sim = new Simulation(config);
-        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
+        sim = new Simulation(config);
+        Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
     }
 
     public void saveSim(ActionEvent actionEvent) throws IOException {

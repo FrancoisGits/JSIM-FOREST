@@ -11,7 +11,7 @@ public class Grid implements CRUDInterface {
 
     private int row;
     private int column;
-    private static Cell[][] matrix;
+    private Cell[][] matrix;
 
     /**
      * Grid Constructor

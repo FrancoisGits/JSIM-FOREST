@@ -13,9 +13,9 @@ import java.util.logging.ErrorManager;
 
 public class Simulation implements CRUDInterface {
 
-    private static int step;
-    private static Grid grid;
-    private static Configuration config;
+    private int step;
+    private Grid grid;
+    private Configuration config;
 
     /**
      * Simulation Constructor
@@ -31,8 +31,8 @@ public class Simulation implements CRUDInterface {
     /**
      * Method to process the simulation until it reach the maximum steps
      */
-    public void process(){
-        while (step <= config.getStepsNumber()) {
+    public void process() throws InterruptedException {
+        while (step < config.getStepsNumber()) {
             System.out.println("Matrix : ");
             System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
             System.out.println("Step : " + this.getStep());
@@ -50,6 +50,7 @@ public class Simulation implements CRUDInterface {
             System.out.println(getGrid().getNeighborsOfOneCell(x, y));
             System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
             System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
+            Thread.sleep(1000);
             processOneStep();
         }
     }
@@ -58,7 +59,7 @@ public class Simulation implements CRUDInterface {
      * Method to process one step during the process of the simulation
      */
     public void processOneStep() {
-        if (step <= config.getStepsNumber()) {
+        if (step < config.getStepsNumber()) {
             ArrayList<Cell> evolveInYoungTree = new ArrayList<>();
             ArrayList<Cell> evolveInBush = new ArrayList<>();
             ArrayList<Cell> evolveInTree = new ArrayList<>();
@@ -103,7 +104,7 @@ public class Simulation implements CRUDInterface {
                 cell.setAge(0);
             }
             System.out.println(this.getGrid().getCellsDensity());
-            Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
+            Client.updateGrid(this.getConfig().getRowNumber(), this.getConfig().getColumnNumber());
             step += 1;
         }
     }
@@ -112,7 +113,7 @@ public class Simulation implements CRUDInterface {
         return step;
     }
 
-    public static Grid getGrid() {
+    public  Grid getGrid() {
         return grid;
     }
 
