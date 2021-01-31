@@ -1,18 +1,31 @@
 package org.cesi.jsimforest;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class ClientController implements Initializable {
 
+    private static Stage popUpProfil = new Stage();
     public TextField textFieldHeight;
     public TextField textFieldWidth;
     public TextField textFieldStep;
     public TextField textFieldSpeed;
+    public TextField textFieldSaveName;
     private static State state;
 
     Configuration config =  new Configuration(1, 1, 105, 105);
@@ -81,5 +94,44 @@ public class ClientController implements Initializable {
     public void stopButton(ActionEvent actionEvent) {
         Simulation sim = new Simulation(config);
         Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
+    }
+
+    public void saveSim(ActionEvent actionEvent) throws IOException {
+        AnchorPane root = FXMLLoader.load(getClass().getResource("/fxml/PopUp.fxml"));
+        Scene savePopUp = new Scene(root);
+        popUpProfil.setScene(savePopUp);
+        popUpProfil.show();
+    }
+
+    public void exportCSV(ActionEvent actionEvent) {
+    }
+
+    public void importSim(ActionEvent actionEvent) throws IOException, InterruptedException {
+        popUpValider();
+    }
+
+    public void setSaveName(ActionEvent actionEvent) throws InterruptedException, IOException {
+        popUpProfil.close();
+        sim.saveSimulation(textFieldSaveName.getText());
+    }
+
+    public static void popUpErreur() throws IOException, InterruptedException {
+        AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpErreur.fxml"));
+        Scene popUpErreur = new Scene(root);
+        popUpProfil.setScene(popUpErreur);
+        popUpProfil.show();
+    }
+    public static void popUpValider() throws IOException, InterruptedException {
+        Stage popUp = new Stage();
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpValider.fxml"));
+        Scene popUpValider = new Scene(root);
+        popUp.setX(1720);
+        popUp.setY(1080);
+        popUp.setScene(popUpValider);
+        popUp.initStyle(StageStyle.UNDECORATED);
+        popUp.show();
+        delay.setOnFinished( event -> popUp.close() );
+        delay.play();
     }
 }

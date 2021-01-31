@@ -1,5 +1,6 @@
 package org.cesi.jsimforest;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.ErrorManager;
 
 public class Simulation implements CRUDInterface {
 
@@ -29,7 +31,7 @@ public class Simulation implements CRUDInterface {
     /**
      * Method to process the simulation until it reach the maximum steps
      */
-    public void process() throws InterruptedException {
+    public void process(){
         while (step <= config.getStepsNumber()) {
             System.out.println("Matrix : ");
             System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
@@ -122,12 +124,18 @@ public class Simulation implements CRUDInterface {
      *
      * @param name
      */
-    public void saveSimulation(String name) {
-        String nameFormat = "'" + name + "'";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String insertTime = "'" + format.format(new java.util.Date()) + "'";
-        String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time) VALUES ({0}, {1}, {2})", this.getStep(), nameFormat, insertTime);
-        create(req);
+    public void saveSimulation(String name) throws IOException, InterruptedException {
+        try {
+            String nameFormat = "'" + name + "'";
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String insertTime = "'" + format.format(new java.util.Date()) + "'";
+            String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time) VALUES ({0}, {1}, {2})", this.getStep(), nameFormat, insertTime);
+            create(req);
+            ClientController.popUpValider();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ClientController.popUpErreur();
+        }
     }
 
     /**
@@ -144,6 +152,7 @@ public class Simulation implements CRUDInterface {
         String insertTime = "'" + format.format(new java.util.Date()) + "'";
         String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time, ID_Configuration, ID_Grid) VALUES ({0}, {1}, {2}, {3} ,{4})", this.getStep(), nameFormat, insertTime, idConfig, idGrid);
         create(req);
+        System.out.println("Oui");
     }
 
     public ResultSet readAllSimulation() {
