@@ -95,7 +95,7 @@ public class Grid implements CRUDInterface {
         }
     }
 
-    public static Cell[][] getMatrix() {
+    public Cell[][] getMatrix() {
         return matrix;
     }
 
@@ -152,5 +152,57 @@ public class Grid implements CRUDInterface {
             maxIdGrid = res.getInt("id");
         }
         return maxIdGrid;
+    }
+
+    public EnumMap<State, Double> getCellsDensity() {
+        EnumMap<State, Double> cellsDensity = new EnumMap<>(State.class);
+        double matrixSize = this.getColumn() * this.getRow();
+        int youngTreeCount = 0;
+        int bushCount = 0;
+        int treeCount = 0;
+        int burningCount = 0;
+        int ashesCount = 0;
+        int infectedCount = 0;
+
+        for (int i = 0; i < this.getMatrix().length; i++) {
+            for (int j = 0; j < this.getMatrix()[i].length; j++) {
+                State stateCell = this.getMatrix()[i][j].getState();
+                    switch (stateCell) {
+                        case youngTree:
+                            youngTreeCount += 1;
+                            break;
+                        case bush:
+                            bushCount += 1;
+                            break;
+                        case tree:
+                            treeCount += 1;
+                            break;
+                        case ashes:
+                            ashesCount += 1;
+                            break;
+                        case burning:
+                            burningCount += 1;
+                            break;
+                        case infected:
+                            infectedCount += 1;
+                            break;
+                    }
+            }
+        }
+        double youngTreeDensity = youngTreeCount / matrixSize;
+        double bushDensity = bushCount / matrixSize;
+        double treeDensity = treeCount / matrixSize;
+        double ashesDensity = ashesCount / matrixSize;
+        double burningDensity = burningCount / matrixSize;
+        double infectedDensity = infectedCount / matrixSize;
+
+        cellsDensity.put(State.youngTree, youngTreeDensity);
+        cellsDensity.put(State.bush, bushDensity);
+        cellsDensity.put(State.tree, treeDensity);
+        cellsDensity.put(State.ashes, ashesDensity);
+        cellsDensity.put(State.burning, burningDensity);
+        cellsDensity.put(State.infected, infectedDensity);
+
+        return cellsDensity;
     }
 }

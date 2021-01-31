@@ -57,7 +57,7 @@ public class Simulation implements CRUDInterface {
     /**
      * Method to process one step during the process of the simulation
      */
-    public static void processOneStep() {
+    public void processOneStep() {
         if (step <= config.getStepsNumber()) {
             ArrayList<Cell> evolveInYoungTree = new ArrayList<>();
             ArrayList<Cell> evolveInBush = new ArrayList<>();
@@ -102,6 +102,7 @@ public class Simulation implements CRUDInterface {
                 cell.setState(State.tree);
                 cell.setAge(0);
             }
+            System.out.println(this.getGrid().getCellsDensity());
             Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
             step += 1;
         }

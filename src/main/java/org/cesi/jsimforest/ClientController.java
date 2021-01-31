@@ -15,6 +15,8 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -28,8 +30,8 @@ public class ClientController implements Initializable {
     public TextField textFieldSaveName;
     private static State state;
 
-    Configuration config =  new Configuration(1, 1, 105, 105);
-    Simulation sim = new Simulation(config);
+    private Configuration config =  new Configuration(1, 1, 10, 10);
+    private Simulation sim = new Simulation(config);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
