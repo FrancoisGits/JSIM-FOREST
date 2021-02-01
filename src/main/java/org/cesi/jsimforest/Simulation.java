@@ -57,18 +57,21 @@ public class Simulation implements CRUDInterface {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Platform.runLater(() -> processOneStep());
+            Platform.runLater(() -> {
+                try {
+                    processOneStep();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
         }).start();
-        if (step == config.getStepsNumber()){
-            ClientController.popUpFinSim();
-        }
     }
 
     /**
      * Method to process one step during the process of the simulation
      */
-    public void processOneStep() {
+    public void processOneStep() throws IOException {
         if (step < config.getStepsNumber()) {
             ArrayList<Cell> evolveInYoungTree = new ArrayList<>();
             ArrayList<Cell> evolveInBush = new ArrayList<>();
@@ -118,6 +121,9 @@ public class Simulation implements CRUDInterface {
             Client.updateStep();
             Client.updateDensity();
             step += 1;
+        }
+        if (step == config.getStepsNumber()){
+            ClientController.popUpFinSim();
         }
     }
 

@@ -116,7 +116,7 @@ public class ClientController implements Initializable {
         sim.process();
     }
 
-    public void stepButton(ActionEvent actionEvent) {
+    public void stepButton(ActionEvent actionEvent) throws IOException {
         sim.processOneStep();
     }
 
