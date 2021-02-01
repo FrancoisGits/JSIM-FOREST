@@ -10,12 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
@@ -139,8 +141,20 @@ public class ClientController implements Initializable {
     public void exportCSV(ActionEvent actionEvent) {
     }
 
-    public void importSim(ActionEvent actionEvent) throws IOException {
-        popUpValider();
+    public void importSim(ActionEvent actionEvent) throws IOException, SQLException {
+        AnchorPane root = FXMLLoader.load(getClass().getResource("/fxml/PopUpImport.fxml"));
+        Scene importPopUp = new Scene(root);
+        GridPane grid = new GridPane();
+        root.getChildren().add(grid);
+        ArrayList<String> readAllSave = new ArrayList<>();
+        readAllSave = sim.readAllSimulation();
+        for(int i = 0; i < readAllSave.size(); i++) {
+            Label simName = new Label();
+            simName.setText(readAllSave.get(i));
+            grid.add(simName, i, i);
+        }
+        popUpProfil.setScene(importPopUp);
+        popUpProfil.show();
     }
 
     public void setSaveName(ActionEvent actionEvent) throws InterruptedException, IOException, SQLException {
