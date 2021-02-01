@@ -79,8 +79,6 @@ public class Client extends Application {
                 }
                 newCell.setOnMouseClicked(e -> {
                     List<String> coordonateCell = Arrays.asList(newCell.getId().split("\\s*,\\s*"));
-                    System.out.println(coordonateCell);
-                    System.out.println(ClientController.getStateSelected());
                     if(ClientController.getStateSelected() == null){
                         ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.empty);
                     }
@@ -171,18 +169,66 @@ public class Client extends Application {
         sp.setMaxSize(910, 910);
         root.getChildren().add(sp);
         grid.getStyleClass().add("scrollGrid");
-        root.getChildren().add(grid);
         // *--------- Grille par defaut ---------*
         for(i = 0; i < 100; i++) {
             for (j = 0; j < 100; j++) {
                 Pane newCell = new Pane();
+                newCell.setId(i + "," + j);
                 newCell.setLayoutX(i * 9);
                 newCell.setLayoutY(j * 9);
                 newCell.setMinSize(9, 9);
                 newCell.getStyleClass().add("empty");
-                grid.add(newCell, i, j);
+                newCell.setOnMouseClicked(e -> {
+                    List<String> coordonateCell = Arrays.asList(newCell.getId().split("\\s*,\\s*"));
+                    if(ClientController.getStateSelected() == null){
+                        ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.empty);
+                    }
+                    else {
+                        switch (ClientController.getStateSelected()){
+                            case empty :
+                                newCell.getChildren().clear();
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
+                                newCell.getStyleClass().add("empty");
+                                ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.empty);
+                                break;
+                            case bush:
+                                newCell.getChildren().clear();
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
+                                newCell.getStyleClass().add("bush");
+                                ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.bush);
+                                break;
+                            case youngTree:
+                                newCell.getChildren().clear();
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
+                                newCell.getStyleClass().add("youngTree");
+                                ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.youngTree);
+                                break;
+                            case tree:
+                                newCell.getChildren().clear();
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
+                                newCell.getStyleClass().add("tree");
+                                ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.tree);
+                                break;
+                            case infected:
+                                newCell.getChildren().clear();
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
+                                newCell.getStyleClass().add("infected");
+                                ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.infected);
+                                break;
+                            case burning:
+                                newCell.getChildren().clear();
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
+                                newCell.getStyleClass().add("burning");
+                                ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.burning);
+                                break;
+                        }
+                    }
+                });
+            grid.add(newCell, i, j);
             }
         }
+        root.getChildren().add(grid);
+
         // =======================================
         // *----------- Import Steps ------------*
         // =======================================

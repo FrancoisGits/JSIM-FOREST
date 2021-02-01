@@ -28,7 +28,7 @@ public class ClientController implements Initializable {
     public TextField textFieldSaveName;
     public static State state;
 
-    protected static Configuration config =  new Configuration(1, 1, 10, 10);
+    protected static Configuration config =  new Configuration(1, 1, 100, 100);
     protected static Simulation sim = new Simulation(config);
 
 
@@ -82,6 +82,7 @@ public class ClientController implements Initializable {
         config.setStepsNumber(Integer.parseInt(textFieldStep.getText()));
         config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
         config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
+        sim = new Simulation(config);
         Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
         Client.updateStep();
     }
