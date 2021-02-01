@@ -7,27 +7,27 @@
 .burning{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: red;
+    -fx-background-color: #ff0000;
 }
 .infected{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: purple;
+    -fx-background-color: #d036bd;
 }
 .tree{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: green;
-}
-.youngTree{
-    -fx-border-color: black;
-    -fx-border-width: 1px;
-    -fx-background-color: chartreuse;
+    -fx-background-color: DARKGREEN;
 }
 .bush{
     -fx-border-color: black;
     -fx-border-width: 1px;
-    -fx-background-color: mediumseagreen;
+    -fx-background-color: #00ae00;
+}
+.youngTree{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-background-color: #5bff4f;
 }
 .grid{
     -fx-border-color: purple;

@@ -8,8 +8,6 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.ErrorManager;
 
 public class Simulation implements CRUDInterface {
 
@@ -105,6 +103,8 @@ public class Simulation implements CRUDInterface {
             }
             System.out.println(this.getGrid().getCellsDensity());
             Client.updateGrid(this.getConfig().getRowNumber(), this.getConfig().getColumnNumber());
+            Client.updateStep();
+            Client.updateDensity();
             step += 1;
         }
     }
@@ -127,17 +127,11 @@ public class Simulation implements CRUDInterface {
      * @param name
      */
     public void saveSimulation(String name) throws IOException, InterruptedException {
-        try {
-            String nameFormat = "'" + name + "'";
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String insertTime = "'" + format.format(new java.util.Date()) + "'";
-            String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time) VALUES ({0}, {1}, {2})", this.getStep(), nameFormat, insertTime);
-            create(req);
-            ClientController.popUpValider();
-        } catch (Exception e) {
-            e.printStackTrace();
-            ClientController.popUpErreur();
-        }
+        String nameFormat = "'" + name + "'";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String insertTime = "'" + format.format(new java.util.Date()) + "'";
+        String req = MessageFormat.format("INSERT INTO simulation (steps, name, insert_time) VALUES ({0}, {1}, {2})", this.getStep(), nameFormat, insertTime);
+        create(req);
     }
 
     /**
@@ -184,17 +178,23 @@ public class Simulation implements CRUDInterface {
      * @param name - name given to the simulation
      * @throws SQLException
      */
-    public void saveEntireSimulation(String name) throws SQLException {
-        getGrid().saveGrid();
-        int nextIdGrid = getGrid().getMaxIdGrid();
-        for (int i = 0; i < getGrid().getMatrix().length; i++) {
-            for (int j = 0; j < getGrid().getMatrix()[i].length; j++) {
-                getGrid().getMatrix()[i][j].saveCell(nextIdGrid);
+    public void saveEntireSimulation(String name) throws SQLException, IOException, InterruptedException {
+        try {
+            getGrid().saveGrid();
+            int nextIdGrid = getGrid().getMaxIdGrid();
+            for (int i = 0; i < getGrid().getMatrix().length; i++) {
+                for (int j = 0; j < getGrid().getMatrix()[i].length; j++) {
+                    getGrid().getMatrix()[i][j].saveCell(nextIdGrid);
+                }
             }
+            this.getConfig().saveConfiguration();
+            int nextIdConfig = this.getConfig().getMaxIdConfiguration();
+            this.saveSimulation(name, nextIdGrid, nextIdConfig);
+            ClientController.popUpValider();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ClientController.popUpErreur();
         }
-        this.getConfig().saveConfiguration();
-        int nextIdConfig = this.getConfig().getMaxIdConfiguration();
-        this.saveSimulation(name, nextIdGrid, nextIdConfig);
     }
 
     public void deleteEntireSimulation(String name, Date insertTime) {

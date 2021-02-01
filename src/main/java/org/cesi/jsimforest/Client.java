@@ -1,7 +1,9 @@
 package org.cesi.jsimforest;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -16,6 +18,14 @@ import java.util.List;
 public class Client extends Application {
 
     private static final GridPane grid = new GridPane();
+    private static final HBox hboxSteps = new HBox();
+    private static final HBox hboxDensity = new HBox();
+    private static final Label densityTree = new Label();
+    private static final Label densityBush = new Label();
+    private static final Label densityYoungTree = new Label();
+    private static final Label densityFire = new Label();
+    private static final Label densityInfected = new Label();
+    private static final Label steps = new Label();
     private static int i;
     private static int j;
 
@@ -108,6 +118,27 @@ public class Client extends Application {
         }
     }
 
+    public static void updateStep(){
+        hboxSteps.getChildren().clear();
+        steps.setText(ClientController.sim.getStep() + 1 + " / " + ClientController.config.getStepsNumber());
+        hboxSteps.getChildren().add(steps);
+    }
+
+    public static void updateDensity(){
+        hboxDensity.getChildren().clear();
+        densityTree.setText("0.0");
+        densityTree.setPadding(new Insets(0, 125, 0, 0));
+        densityBush.setText("0.0");
+        densityBush.setPadding(new Insets(0, 165, 0, 0));
+        densityYoungTree.setText("0.0");
+        densityYoungTree.setPadding(new Insets(0, 100, 0, 0));
+        densityFire.setText("0.0");
+        densityFire.setPadding(new Insets(0, 150, 0, 0));
+        densityInfected.setText("0.0");
+        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityFire, densityInfected);
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
 
@@ -144,7 +175,31 @@ public class Client extends Application {
                 grid.add(newCell, i, j);
             }
         }
+        // =======================================
+        // *----------- Import Steps ------------*
+        // =======================================
+        hboxSteps.setLayoutX(920);
+        hboxSteps.setLayoutY(52);
+        root.getChildren().add(hboxSteps);
+        steps.setText("0 / 0");
+        hboxSteps.getChildren().add(steps);
 
+        // =======================================
+        // *----------- Import Steps ------------*
+        // =======================================
+        hboxDensity.setLayoutX(135);
+        hboxDensity.setLayoutY(52);
+        root.getChildren().add(hboxDensity);
+        densityTree.setText("0.0");
+        densityTree.setPadding(new Insets(0, 125, 0, 0));
+        densityBush.setText("0.0");
+        densityBush.setPadding(new Insets(0, 165, 0, 0));
+        densityYoungTree.setText("0.0");
+        densityYoungTree.setPadding(new Insets(0, 100, 0, 0));
+        densityFire.setText("0.0");
+        densityFire.setPadding(new Insets(0, 150, 0, 0));
+        densityInfected.setText("0.0");
+        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityFire, densityInfected);
 
         // =======================================
         // *----- Config Fenêtre Simulation -----*

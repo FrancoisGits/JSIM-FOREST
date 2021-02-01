@@ -5,20 +5,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 public class ClientController implements Initializable {
 
@@ -30,30 +25,22 @@ public class ClientController implements Initializable {
     public TextField textFieldSaveName;
     private static State state;
 
-        protected static Configuration config =  new Configuration(1, 1, 10, 10);
-        protected static Simulation sim = new Simulation(config);
+
+    protected static Configuration config =  new Configuration(1, 1, 10, 10);
+    protected static Simulation sim = new Simulation(config);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ok");
     }
 
-    public void setWidthGrid(ActionEvent actionEvent) {
-        sim.getConfig().setRowNumber(Integer.parseInt(textFieldWidth.getText()));
-        Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
-    }
-
-    public void setHeightGrid(ActionEvent actionEvent) {
-        sim.getConfig().setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
-        Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
-    }
-
-    public void setStep(ActionEvent actionEvent) {
+    public void applyConfig(ActionEvent actionEvent) {
+        config.setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
         config.setStepsNumber(Integer.parseInt(textFieldStep.getText()));
-    }
-
-    public void setSpeed(ActionEvent actionEvent) {
-        sim.getConfig().setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
+        config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
+        config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
+        Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
+        Client.updateStep();
     }
 
     public void setSelectedEmpty(ActionEvent actionEvent) {
@@ -112,9 +99,9 @@ public class ClientController implements Initializable {
         popUpValider();
     }
 
-    public void setSaveName(ActionEvent actionEvent) throws InterruptedException, IOException {
+    public void setSaveName(ActionEvent actionEvent) throws InterruptedException, IOException, SQLException {
         popUpProfil.close();
-        sim.saveSimulation(textFieldSaveName.getText());
+        sim.saveEntireSimulation(textFieldSaveName.getText());
     }
 
     public static void popUpErreur() throws IOException, InterruptedException {

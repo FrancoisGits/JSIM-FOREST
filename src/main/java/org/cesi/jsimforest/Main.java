@@ -1,5 +1,7 @@
 package org.cesi.jsimforest;
 
+import javafx.embed.swing.JFXPanel;
+
 import java.sql.SQLException;
 
 /**
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) {
+        new JFXPanel();
         DataBaseConnection.connect();
         Client.launchClient();
     }
