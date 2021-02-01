@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -169,9 +170,22 @@ public class Simulation implements CRUDInterface {
         System.out.println("Oui");
     }
 
-    public ResultSet readAllSimulation() {
-        String req = "SELECT * FROM simulation";
-        return read(req);
+    public ArrayList<String> readAllSimulation() throws SQLException {
+        String req = "SELECT name, insert_time FROM simulation";
+        ArrayList<String> simulationsArrayList = new ArrayList<>();
+        ResultSet rs  = read(req);
+        ResultSetMetaData rsmd  = rs.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+        while (rs.next()) {
+            String str = "";
+            for (int i = 1; i <= columnsNumber; i++) {
+                String columnValue = rs.getString(i);
+                str += columnValue;
+                str += " ";
+            }
+            simulationsArrayList.add(str);
+        }
+        return simulationsArrayList;
     }
 
     public ResultSet readOneSimulation(int id) {
