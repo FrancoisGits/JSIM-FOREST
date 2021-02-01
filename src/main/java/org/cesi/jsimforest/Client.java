@@ -1,14 +1,15 @@
 package org.cesi.jsimforest;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
-import javafx.stage.Popup;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,8 +24,9 @@ public class Client extends Application {
     private static final Label densityTree = new Label();
     private static final Label densityBush = new Label();
     private static final Label densityYoungTree = new Label();
-    private static final Label densityFire = new Label();
+    private static final Label densityBurning = new Label();
     private static final Label densityInfected = new Label();
+    private static final Label densityAshes = new Label();
     private static final Label steps = new Label();
     private static int i;
     private static int j;
@@ -70,6 +72,10 @@ public class Client extends Application {
                         newCell.getChildren().clear();
                         newCell.getStyleClass().add("burning");
                         break;
+                    case ashes:
+                        newCell.getChildren().clear();
+                        newCell.getStyleClass().add("ashes");
+                        break;
                 }
                 newCell.setOnMouseClicked(e -> {
                     List<String> coordonateCell = Arrays.asList(newCell.getId().split("\\s*,\\s*"));
@@ -82,37 +88,37 @@ public class Client extends Application {
                         switch (ClientController.getStateSelected()){
                             case empty :
                                 newCell.getChildren().clear();
-                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning");
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
                                 newCell.getStyleClass().add("empty");
                                 ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.empty);
                                 break;
                             case bush:
                                 newCell.getChildren().clear();
-                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning");
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
                                 newCell.getStyleClass().add("bush");
                                 ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.bush);
                                 break;
                             case youngTree:
                                 newCell.getChildren().clear();
-                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning");
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
                                 newCell.getStyleClass().add("youngTree");
                                 ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.youngTree);
                                 break;
                             case tree:
                                 newCell.getChildren().clear();
-                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning");
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
                                 newCell.getStyleClass().add("tree");
                                 ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.tree);
                                 break;
                             case infected:
                                 newCell.getChildren().clear();
-                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning");
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
                                 newCell.getStyleClass().add("infected");
                                 ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.infected);
                                 break;
                             case burning:
                                 newCell.getChildren().clear();
-                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning");
+                                newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
                                 newCell.getStyleClass().add("burning");
                                 ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.burning);
                                 break;
@@ -132,17 +138,13 @@ public class Client extends Application {
 
     public static void updateDensity(){
         hboxDensity.getChildren().clear();
-        densityTree.setText("0.0");
-        densityTree.setPadding(new Insets(0, 125, 0, 0));
-        densityBush.setText("0.0");
-        densityBush.setPadding(new Insets(0, 165, 0, 0));
-        densityYoungTree.setText("0.0");
-        densityYoungTree.setPadding(new Insets(0, 100, 0, 0));
-        densityFire.setText("0.0");
-        densityFire.setPadding(new Insets(0, 150, 0, 0));
-        densityInfected.setText("0.0");
-        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityFire, densityInfected);
-
+        densityTree.setText(ClientController.sim.getGrid().getCellsDensity().get(State.tree) + "");
+        densityBush.setText(ClientController.sim.getGrid().getCellsDensity().get(State.bush) + "");
+        densityYoungTree.setText(ClientController.sim.getGrid().getCellsDensity().get(State.youngTree) + "");
+        densityBurning.setText(ClientController.sim.getGrid().getCellsDensity().get(State.burning) + "");
+        densityInfected.setText(ClientController.sim.getGrid().getCellsDensity().get(State.infected) + "");
+        densityAshes.setText(ClientController.sim.getGrid().getCellsDensity().get(State.ashes) + "");
+        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityBurning, densityInfected, densityAshes);
     }
 
     @Override
@@ -168,7 +170,7 @@ public class Client extends Application {
         sp.setLayoutY(90);
         sp.setMaxSize(910, 910);
         root.getChildren().add(sp);
-        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("scrollGrid");
         root.getChildren().add(grid);
         // *--------- Grille par defaut ---------*
         for(i = 0; i < 100; i++) {
@@ -193,19 +195,21 @@ public class Client extends Application {
         // =======================================
         // *----------- Import Steps ------------*
         // =======================================
-        hboxDensity.setLayoutX(135);
+        hboxDensity.setLayoutX(125);
         hboxDensity.setLayoutY(52);
         root.getChildren().add(hboxDensity);
         densityTree.setText("0.0");
-        densityTree.setPadding(new Insets(0, 125, 0, 0));
+        densityTree.setMinWidth(135);
         densityBush.setText("0.0");
-        densityBush.setPadding(new Insets(0, 165, 0, 0));
+        densityBush.setMinWidth(175);
         densityYoungTree.setText("0.0");
-        densityYoungTree.setPadding(new Insets(0, 100, 0, 0));
-        densityFire.setText("0.0");
-        densityFire.setPadding(new Insets(0, 150, 0, 0));
+        densityYoungTree.setMinWidth(110);
+        densityBurning.setText("0.0");
+        densityBurning.setMinWidth(142);
         densityInfected.setText("0.0");
-        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityFire, densityInfected);
+        densityInfected.setMinWidth(130);
+        densityAshes.setText("0.0");
+        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityBurning, densityInfected, densityAshes);
 
         // =======================================
         // *----- Config Fenêtre Simulation -----*

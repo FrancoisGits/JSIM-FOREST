@@ -2,9 +2,11 @@ package org.cesi.jsimforest;
 
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,11 +26,11 @@ public class ClientController implements Initializable {
     public TextField textFieldStep;
     public TextField textFieldSpeed;
     public TextField textFieldSaveName;
-    private static State state;
-
+    public static State state;
 
     protected static Configuration config =  new Configuration(1, 1, 10, 10);
     protected static Simulation sim = new Simulation(config);
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -85,27 +87,27 @@ public class ClientController implements Initializable {
     }
 
     public void setSelectedEmpty(ActionEvent actionEvent) {
-        ClientController.state = State.empty;
+        state = State.empty;
     }
 
     public void setSelectedInfected(ActionEvent actionEvent) {
-        ClientController.state = State.infected;
+        state = State.infected;
     }
 
     public void setSelectedBurning(ActionEvent actionEvent) {
-        ClientController.state = State.burning;
+        state = State.burning;
     }
 
     public void setSelectedBush(ActionEvent actionEvent) {
-        ClientController.state = State.bush;
+        state = State.bush;
     }
 
     public void setSelectedYoungTree(ActionEvent actionEvent) {
-        ClientController.state = State.youngTree;
+        state = State.youngTree;
     }
 
     public void setSelectedTree(ActionEvent actionEvent) {
-        ClientController.state = State.tree;
+        state = State.tree;
     }
 
     public static State getStateSelected() { return state; }

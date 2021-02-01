@@ -29,12 +29,13 @@
     -fx-border-width: 1px;
     -fx-background-color: #5bff4f;
 }
-.grid{
-    -fx-border-color: purple;
-    -fx-border-width: 2px;
+.ashes{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-background-color: #979797;
 }
-.scroll{
-    -fx-border-color: yellow;
+.scrollGrid{
+    -fx-border-color: black;
     -fx-border-width: 2px;
 }
 .true {
