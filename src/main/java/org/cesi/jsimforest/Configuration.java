@@ -7,7 +7,7 @@ import java.text.MessageFormat;
 
 public class Configuration implements CRUDInterface{
 
-    private int stepsPerSecond;
+    private double stepsPerSecond;
     private int stepsNumber;
     private int rowNumber;
     private int columnNumber;
@@ -38,7 +38,7 @@ public class Configuration implements CRUDInterface{
         this.columnNumber = columnNumber;
     }
 
-    public int getStepsPerSecond() { return stepsPerSecond; }
+    public double getStepsPerSecond() { return stepsPerSecond; }
 
     public void setStepsPerSecond(int stepsPerSecond) {
         if(stepsPerSecond >= 1) {

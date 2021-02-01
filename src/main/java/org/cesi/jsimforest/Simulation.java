@@ -32,7 +32,7 @@ public class Simulation implements CRUDInterface {
      * Method to process the simulation until it reach the maximum steps
      */
     public void process() throws InterruptedException, IOException {
-        int interval = 1000 / this.getConfig().getStepsPerSecond();
+        int interval =  (int) (1000 / this.getConfig().getStepsPerSecond());
         new Thread(() -> {
         while (step < config.getStepsNumber()) {
 //            System.out.println("Matrix : ");
@@ -53,7 +53,7 @@ public class Simulation implements CRUDInterface {
 //            System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
 //            System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
             try {
-                Thread.sleep(1000);
+                Thread.sleep(interval);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
