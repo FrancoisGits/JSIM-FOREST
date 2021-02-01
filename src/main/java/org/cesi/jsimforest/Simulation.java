@@ -29,7 +29,7 @@ public class Simulation implements CRUDInterface {
     /**
      * Method to process the simulation until it reach the maximum steps
      */
-    public void process() throws InterruptedException {
+    public void process() throws InterruptedException, IOException {
         while (step < config.getStepsNumber()) {
             System.out.println("Matrix : ");
             System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
@@ -50,6 +50,9 @@ public class Simulation implements CRUDInterface {
             System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
             Thread.sleep(1000);
             processOneStep();
+        }
+        if (step == config.getStepsNumber()){
+            ClientController.popUpFinSim();
         }
     }
 

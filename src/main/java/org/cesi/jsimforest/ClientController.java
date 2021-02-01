@@ -69,7 +69,7 @@ public class ClientController implements Initializable {
 
     public static State getStateSelected() { return state; }
 
-    public void playButton(ActionEvent actionEvent) throws InterruptedException {
+    public void playButton(ActionEvent actionEvent) throws InterruptedException, IOException {
         sim.process();
     }
 
@@ -95,7 +95,7 @@ public class ClientController implements Initializable {
     public void exportCSV(ActionEvent actionEvent) {
     }
 
-    public void importSim(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void importSim(ActionEvent actionEvent) throws IOException {
         popUpValider();
     }
 
@@ -104,18 +104,31 @@ public class ClientController implements Initializable {
         sim.saveEntireSimulation(textFieldSaveName.getText());
     }
 
-    public static void popUpErreur() throws IOException, InterruptedException {
+    public static void popUpErreur() throws IOException {
         AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpErreur.fxml"));
         Scene popUpErreur = new Scene(root);
         popUpProfil.setScene(popUpErreur);
         popUpProfil.show();
     }
-    public static void popUpValider() throws IOException, InterruptedException {
+    public static void popUpValider() throws IOException {
         Stage popUp = new Stage();
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpValider.fxml"));
         Scene popUpValider = new Scene(root);
         popUp.setX(1720);
+        popUp.setY(1080);
+        popUp.setScene(popUpValider);
+        popUp.initStyle(StageStyle.UNDECORATED);
+        popUp.show();
+        delay.setOnFinished( event -> popUp.close() );
+        delay.play();
+    }
+    public static void popUpFinSim() throws IOException {
+        Stage popUp = new Stage();
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpFinSim.fxml"));
+        Scene popUpValider = new Scene(root);
+        popUp.setX(1580);
         popUp.setY(1080);
         popUp.setScene(popUpValider);
         popUp.initStyle(StageStyle.UNDECORATED);
