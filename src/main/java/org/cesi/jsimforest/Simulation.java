@@ -1,5 +1,7 @@
 package org.cesi.jsimforest;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -31,27 +33,33 @@ public class Simulation implements CRUDInterface {
      */
     public void process() throws InterruptedException, IOException {
         int interval = 1000 / this.getConfig().getStepsPerSecond();
+        new Thread(() -> {
         while (step < config.getStepsNumber()) {
-            System.out.println("Matrix : ");
-            System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
-            System.out.println("Step : " + this.getStep());
-            System.out.println("Liste Cells : ");
-            for (int i = 0; i < getGrid().getMatrix().length; i++) {
-                for (int j = 0; j < getGrid().getMatrix()[0].length; j++) {
-                    System.out.println(getGrid().getMatrix()[i][j].infoCell());
-                }
+//            System.out.println("Matrix : ");
+//            System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
+//            System.out.println("Step : " + this.getStep());
+//            System.out.println("Liste Cells : ");
+//            for (int i = 0; i < getGrid().getMatrix().length; i++) {
+//                for (int j = 0; j < getGrid().getMatrix()[0].length; j++) {
+//                    System.out.println(getGrid().getMatrix()[i][j].infoCell());
+//                }
+//            }
+//            int x = 1;
+//            int y = 2;
+//            System.out.println("Cell target : ");
+//            System.out.println(getGrid().getMatrix()[x][y].infoCell());
+//            System.out.println("Voisines de Cell target : ");
+//            System.out.println(getGrid().getNeighborsOfOneCell(x, y));
+//            System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
+//            System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            int x = 1;
-            int y = 2;
-            System.out.println("Cell target : ");
-            System.out.println(getGrid().getMatrix()[x][y].infoCell());
-            System.out.println("Voisines de Cell target : ");
-            System.out.println(getGrid().getNeighborsOfOneCell(x, y));
-            System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
-            System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
-            Thread.sleep(interval);
-            processOneStep();
+            Platform.runLater(() -> processOneStep());
         }
+        }).start();
         if (step == config.getStepsNumber()){
             ClientController.popUpFinSim();
         }
