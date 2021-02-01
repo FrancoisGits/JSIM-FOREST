@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -32,6 +33,46 @@ public class ClientController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ok");
+    }
+
+    public void setWidthGrid(KeyEvent keyEvent) throws IOException {
+        textFieldWidth.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
+        if(textFieldWidth.getText().matches("^[0-9]*$")){
+            textFieldWidth.getStyleClass().add("true");
+        }
+        else {
+            textFieldWidth.getStyleClass().add("false");
+        }
+    }
+
+    public void setHeightGrid(KeyEvent keyEvent) {
+        textFieldHeight.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
+        if(textFieldHeight.getText().matches("^[0-9]*$")){
+            textFieldHeight.getStyleClass().add("true");
+        }
+        else {
+            textFieldHeight.getStyleClass().add("false");
+        }
+    }
+
+    public void setStep(KeyEvent keyEvent) {
+        textFieldStep.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
+        if(textFieldStep.getText().matches("^[0-9]*$")){
+            textFieldStep.getStyleClass().add("true");
+        }
+        else {
+            textFieldStep.getStyleClass().add("false");
+        }
+    }
+
+    public void setSpeed(KeyEvent keyEvent) {
+        textFieldSpeed.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
+        if(textFieldSpeed.getText().matches("^[0-9]*$")){
+            textFieldSpeed.getStyleClass().add("true");
+        }
+        else {
+            textFieldSpeed.getStyleClass().add("false");
+        }
     }
 
     public void applyConfig(ActionEvent actionEvent) {

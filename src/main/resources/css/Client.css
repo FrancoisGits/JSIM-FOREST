@@ -37,3 +37,11 @@
     -fx-border-color: yellow;
     -fx-border-width: 2px;
 }
+.true {
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+}
+.false {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}

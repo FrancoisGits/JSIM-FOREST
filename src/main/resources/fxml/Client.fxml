@@ -168,16 +168,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <Label text="Largeur de la Grille :" GridPane.valignment="CENTER"/>
-            <TextField fx:id="textFieldWidth" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1"
+            <TextField fx:id="textFieldWidth" onKeyReleased="#setWidthGrid" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1"
                        GridPane.valignment="CENTER"/>
             <Label text="Hauteur de la Grille :" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-            <TextField fx:id="textFieldHeight" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1"
+            <TextField fx:id="textFieldHeight" onKeyPressed="#setHeightGrid" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1"
                        GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
             <Label text="Nombre de Pas :" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
-            <TextField fx:id="textFieldStep" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1"
+            <TextField fx:id="textFieldStep" onKeyPressed="#setStep" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1"
                        GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
             <Label text="Vitesse Exécution :" GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
-            <TextField fx:id="textFieldSpeed" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1"
+            <TextField fx:id="textFieldSpeed" onKeyPressed="#setSpeed" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1"
                        GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
         </GridPane>
     </GridPane>
