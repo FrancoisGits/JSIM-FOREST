@@ -30,6 +30,7 @@ public class Simulation implements CRUDInterface {
      * Method to process the simulation until it reach the maximum steps
      */
     public void process() throws InterruptedException, IOException {
+        int interval = 1000 / this.getConfig().getStepsPerSecond();
         while (step < config.getStepsNumber()) {
             System.out.println("Matrix : ");
             System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
@@ -48,7 +49,7 @@ public class Simulation implements CRUDInterface {
             System.out.println(getGrid().getNeighborsOfOneCell(x, y));
             System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
             System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
-            Thread.sleep(1000);
+            Thread.sleep(interval);
             processOneStep();
         }
         if (step == config.getStepsNumber()){
@@ -127,7 +128,7 @@ public class Simulation implements CRUDInterface {
     /**
      * saveSimulation - Method to store Simuation Data in DB - useful for testing
      *
-     * @param name
+     * @param name - name of the simulation to store it in DB
      */
     public void saveSimulation(String name) throws IOException, InterruptedException {
         String nameFormat = "'" + name + "'";
