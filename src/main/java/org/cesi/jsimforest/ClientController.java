@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 public class ClientController implements Initializable {
 
     private static Stage popUpProfil = new Stage();
+    private static Stage popUp = new Stage();
     public TextField textFieldHeight;
     public TextField textFieldWidth;
     public TextField textFieldStep;
@@ -133,6 +134,7 @@ public class ClientController implements Initializable {
     public void stopButton(ActionEvent actionEvent) {
         sim = new Simulation(config);
         Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
+        popUp.close();
     }
 
     public void saveSim(ActionEvent actionEvent) throws IOException {
@@ -143,6 +145,8 @@ public class ClientController implements Initializable {
     }
 
     public void exportCSV(ActionEvent actionEvent) {
+        System.out.println("exportation");
+        popUp.close();
     }
 
     public void importSim(ActionEvent actionEvent) throws IOException, SQLException {
@@ -186,7 +190,6 @@ public class ClientController implements Initializable {
         popUpProfil.show();
     }
     public static void popUpValider() throws IOException {
-        Stage popUp = new Stage();
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpValider.fxml"));
         Scene popUpValider = new Scene(root);
@@ -199,16 +202,19 @@ public class ClientController implements Initializable {
         delay.play();
     }
     public static void popUpFinSim() throws IOException {
-        Stage popUp = new Stage();
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
         AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpFinSim.fxml"));
         Scene popUpValider = new Scene(root);
-        popUp.setX(1580);
-        popUp.setY(1080);
+        popUpValider.getStylesheets().add(ClientController.class.getResource("/css/Client.css").toExternalForm());
         popUp.setScene(popUpValider);
-        popUp.initStyle(StageStyle.UNDECORATED);
         popUp.show();
-        delay.setOnFinished( event -> popUp.close() );
-        delay.play();
+    }
+
+    public void closePopUp(ActionEvent actionEvent) {
+        popUp.close();
+    }
+
+    public void modeDestruction(ActionEvent actionEvent){
+        System.out.println("destruction");
+        popUp.close();
     }
 }
