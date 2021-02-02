@@ -9,8 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class Simulation implements CRUDInterface {
 
@@ -35,7 +34,7 @@ public class Simulation implements CRUDInterface {
     public void process() throws InterruptedException, IOException {
         int interval =  (int) (1000 / this.getConfig().getStepsPerSecond());
         new Thread(() -> {
-        while (step < config.getStepsNumber()) {
+        while (step < config.getStepsNumber() && ClientController.instanceAlive) {
 //            System.out.println("Matrix : ");
 //            System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
 //            System.out.println("Step : " + this.getStep());
@@ -181,17 +180,44 @@ public class Simulation implements CRUDInterface {
             for (int i = 1; i <= columnsNumber; i++) {
                 String columnValue = rs.getString(i);
                 str += columnValue;
-                str += " ";
+                str += ":";
             }
+            str = str.substring(0, str.indexOf('.'));
             simulationsArrayList.add(str);
         }
         return simulationsArrayList;
     }
 
-    public ResultSet readOneSimulation(int id) {
-        String req = MessageFormat.format("SELECT steps, name, insert_time FROM simulation WHERE ID = {0}", id);
-        return read(req);
+    public Map<String, Integer> readOneSimulation(String simulationName, String simulationInsertTime) {
+        simulationName = "'" + simulationName + "'";
+        simulationInsertTime = "'" + simulationInsertTime + "'";
+        Map<String, Integer> simulationInfos = new HashMap<String, Integer>();
+        String req = MessageFormat.format("SELECT ID, steps, ID_Configuration, ID_Grid FROM simulation WHERE name LIKE {0} AND insert_Time = {1}", simulationName, simulationInsertTime);
+        try{
+            ResultSet rs = read(req);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            int idSim = 0;
+            int steps = 0;
+            int idConfig = 0;
+            int idGrid = 0;
+            if (rs.next()) {
+                idSim = rs.getInt("ID");
+                steps = rs.getInt("steps");
+                idConfig = rs.getInt("ID_Configuration");
+                idGrid = rs.getInt("ID_Grid");
+            }
+            simulationInfos.put("ID",idSim);
+            simulationInfos.put("steps", steps);
+            simulationInfos.put("ID_Configuration", idConfig);
+            simulationInfos.put("ID_Grid", idGrid);
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return simulationInfos;
     }
+
+
 
     public void deleteOneSimulation(String name, Date insertTime) {
         String req = MessageFormat.format("DELETE FROM simulation WHERE name LIKE  '{0}' and insertTime = {1}", name, insertTime);

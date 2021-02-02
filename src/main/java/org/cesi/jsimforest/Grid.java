@@ -2,10 +2,7 @@ package org.cesi.jsimforest;
 
 import java.sql.*;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.EnumMap;
+import java.util.*;
 
 public class Grid implements CRUDInterface {
 
@@ -128,9 +125,53 @@ public class Grid implements CRUDInterface {
         create(req);
     }
 
-    public ResultSet readOneGrid(int id) {
-        String req = MessageFormat.format("SELECT * FROM grid WHERE ID = {0}", id);
-        return read(req);
+    public Map<String, Integer> readOneGrid(int idGrid) {
+        Map<String, Integer> gridInfos = new HashMap<String, Integer>();
+        String req = MessageFormat.format("SELECT height, width FROM grid WHERE ID = {0}", idGrid);
+        try{
+            ResultSet rs = read(req);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            int height = 0;
+            int width = 0;
+            if (rs.next()) {
+                height = rs.getInt("height");
+                width = rs.getInt("stepNumber");
+            }
+            gridInfos.put("height",height);
+            gridInfos.put("stepNumber", width);
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return gridInfos;
+    }
+
+    public Map<String, String> readAllCellsInOneGrid(int idGrid) {
+        Map<String, String> cellsInfos = new HashMap<>();
+        String req = MessageFormat.format("SELECT coordX, coordY, state, age FROM cells WHERE ID_Grid= {0}", idGrid);
+        try {
+            ResultSet rs = read(req);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnNumber = rsmd.getColumnCount();
+            String coordX = "";
+            String coordY = "";
+            String state = "";
+            String age = "";
+            String cellCoordinates = "";
+            String infos = "";
+            while(rs.next()) {
+                coordX = Integer.toString(rs.getInt("coordX"));
+                coordY = Integer.toString(rs.getInt("coordY"));
+                state = rs.getString("state");
+                age = Integer.toString(rs.getInt("age"));
+                cellCoordinates = coordX + ":" + coordY;
+                infos = state + ":" + age;
+                cellsInfos.put(cellCoordinates, infos);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return cellsInfos;
     }
 
     public void deleteOneGrid(int id) {

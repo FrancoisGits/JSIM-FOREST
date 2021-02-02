@@ -1,8 +1,12 @@
 package org.cesi.jsimforest;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.EnumMap;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Cell implements CRUDInterface {
 
@@ -128,10 +132,6 @@ public class Cell implements CRUDInterface {
         return read(req);
     }
 
-    public ResultSet readAllCellsInOneGrid(int id) {
-        String req = MessageFormat.format("SELECT * FROM cells WHERE ID_GRID = {0}", id);
-        return read(req);
-    }
 
     public void updateOneCell(int idGrid, int coordX, int coordY) {
         String req = MessageFormat.format("UPDATE FROM cells SET state = {0}, age = {1} WHERE ID_GRID = {2} AND coordX = {3} AND coordY = {4}", this.getState().toString(), this.getAge(), idGrid, coordX, coordY);

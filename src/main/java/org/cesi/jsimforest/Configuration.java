@@ -1,8 +1,11 @@
 package org.cesi.jsimforest;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Configuration implements CRUDInterface{
@@ -92,9 +95,31 @@ public class Configuration implements CRUDInterface{
         return read(req);
     }
 
-    public ResultSet readOneConfiguration(int id) {
-        String req = MessageFormat.format("SELECT stepsPerSecond, stepNumber, rowNumber, columnNumber FROM configuration WHERE ID = {0}", id);
-        return read(req);
+    public Map<String, Integer> readOneConfig(int idConfig) {
+        Map<String, Integer> configInfos = new HashMap<String, Integer>();
+        String req = MessageFormat.format("SELECT stepsPerSecond, stepNumber, rowNumber, columnNumber FROM configuration WHERE ID = {0}", idConfig);
+        try{
+            ResultSet rs = read(req);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            int stepsPerSecond = 0;
+            int stepNumber = 0;
+            int rowNumber = 0;
+            int columnNumber = 0;
+            if (rs.next()) {
+                stepsPerSecond = rs.getInt("stepsPerSecond");
+                stepNumber = rs.getInt("stepNumber");
+                rowNumber = rs.getInt("rowNumber");
+                columnNumber = rs.getInt("columnNumber");
+            }
+            configInfos.put("stepsPerSecond",stepsPerSecond);
+            configInfos.put("stepNumber", stepNumber);
+            configInfos.put("rowNumber", rowNumber);
+            configInfos.put("columnNumber", columnNumber);
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return configInfos;
     }
 
     public void deleteOneConfiguration(int id) {

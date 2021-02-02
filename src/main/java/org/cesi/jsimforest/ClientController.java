@@ -19,10 +19,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ClientController implements Initializable {
 
@@ -37,6 +34,7 @@ public class ClientController implements Initializable {
 
     protected static Configuration config =  new Configuration(1, 1, 100, 100);
     protected static Simulation sim = new Simulation(config);
+    protected static boolean instanceAlive = true;
 
 
     @Override
@@ -85,10 +83,11 @@ public class ClientController implements Initializable {
     }
 
     public void applyConfig(ActionEvent actionEvent) {
-        config.setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
-        config.setStepsNumber(Integer.parseInt(textFieldStep.getText()));
-        config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
-        config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
+        config = new Configuration(Integer.parseInt(textFieldSpeed.getText()), Integer.parseInt(textFieldStep.getText()), Integer.parseInt(textFieldHeight.getText()), Integer.parseInt(textFieldWidth.getText()));
+//        config.setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
+//        config.setStepsNumber(Integer.parseInt(textFieldStep.getText()));
+//        config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
+//        config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
         sim = new Simulation(config);
         Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
         Client.updateStep();
@@ -132,6 +131,7 @@ public class ClientController implements Initializable {
     }
 
     public void stopButton(ActionEvent actionEvent) {
+        instanceAlive = false;
         sim = new Simulation(config);
         Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
         popUp.close();
@@ -159,6 +159,7 @@ public class ClientController implements Initializable {
         root.getChildren().add(grid);
         ArrayList<String> readAllSave;
         readAllSave = sim.readAllSimulation();
+        System.out.println(readAllSave);
         grid.setHgap(10);
         for(int i = 0; i < readAllSave.size(); i++) {
             Label simName = new Label();
@@ -168,7 +169,7 @@ public class ClientController implements Initializable {
             simName.getStyleClass().add("empty");
             simName.setOnMouseClicked(e -> {System.out.println("importation");});
             Button importButton = new Button("Importer");
-            importButton.setOnMouseClicked(e -> {System.out.println("importation");});
+            importButton.setOnMouseClicked(e -> {importSelectedSim(simName.getText());});
             importButton.setMaxHeight(5);
             importButton.setMaxWidth(100);
             grid.add(importButton, 2, i);
@@ -176,6 +177,28 @@ public class ClientController implements Initializable {
         }
         popUpProfil.setScene(importPopUp);
         popUpProfil.show();
+    }
+
+    public void importSelectedSim(String selectedSimulation) {
+        String simulationDateTime = selectedSimulation.substring(selectedSimulation.indexOf(":")+1);
+        String simulationName = selectedSimulation.substring(0,selectedSimulation.indexOf(":"));
+        Map<String, Integer> simInfos = sim.readOneSimulation(simulationName, simulationDateTime);
+        Map<String, Integer> configInfos = sim.getConfig().readOneConfig(simInfos.get("ID_Configuration"));
+        Map<String, Integer> gridInfos = sim.getGrid().readOneGrid(simInfos.get("ID_Grid"));
+        Map<String, String> cellsInfos = sim.getGrid().readAllCellsInOneGrid(simInfos.get("ID_Grid"));
+        config = new Configuration(configInfos.get("stepsPerSecond"), configInfos.get("stepNumber"), configInfos.get("rowNumber"), configInfos.get("columnNumber"));
+        sim = new Simulation(config);
+        for (int i = 0; i < sim.getGrid().getMatrix().length ; i++) {
+            for (int j = 0; j < sim.getGrid().getMatrix()[i].length; j++) {
+                String stateAndAge = cellsInfos.get(Integer.toString(i) + ':' + Integer.toString(j));
+                State state = State.valueOf(stateAndAge.substring(0, stateAndAge.indexOf(":")));
+                int age = Integer.parseInt(stateAndAge.substring(stateAndAge.indexOf(":")+1));
+                sim.getGrid().getMatrix()[i][j].setState(state);
+                sim.getGrid().getMatrix()[i][j].setAge(age);
+            }
+        }
+        Client.updateGrid(sim.getGrid().getRow(), sim.getGrid().getColumn());
+        popUpProfil.close();
     }
 
     public void setSaveName(ActionEvent actionEvent) throws InterruptedException, IOException, SQLException {
