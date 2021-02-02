@@ -164,6 +164,7 @@ public class ClientController implements Initializable {
             simName.getStyleClass().add("empty");
             simName.setOnMouseClicked(e -> {System.out.println("importation");});
             Button importButton = new Button("Importer");
+            importButton.setOnMouseClicked(e -> {System.out.println("importation");});
             importButton.setMaxHeight(5);
             importButton.setMaxWidth(100);
             grid.add(importButton, 2, i);
