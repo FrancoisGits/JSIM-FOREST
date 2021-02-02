@@ -21,6 +21,7 @@ public class Client extends Application {
     private static final GridPane grid = new GridPane();
     private static final HBox hboxSteps = new HBox();
     private static final HBox hboxDensity = new HBox();
+    private static final HBox hboxModeSim = new HBox();
     private static final Label densityTree = new Label();
     private static final Label densityBush = new Label();
     private static final Label densityYoungTree = new Label();
@@ -128,9 +129,15 @@ public class Client extends Application {
         }
     }
 
-    public static void updateStep(){
+    public static void updateStepDuringSim(){
         hboxSteps.getChildren().clear();
         steps.setText(ClientController.sim.getStep() + 1 + " / " + ClientController.config.getStepsNumber());
+        hboxSteps.getChildren().add(steps);
+    }
+
+    public static void updateStep(){
+        hboxSteps.getChildren().clear();
+        steps.setText(ClientController.sim.getStep() + " / " + ClientController.config.getStepsNumber());
         hboxSteps.getChildren().add(steps);
     }
 
@@ -145,6 +152,11 @@ public class Client extends Application {
         hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityBurning, densityInfected, densityAshes);
     }
 
+    public void updateMode(){
+        Label modeSim = new Label("Forestier");
+        hboxModeSim.getChildren().add(modeSim);
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
 
@@ -154,6 +166,16 @@ public class Client extends Application {
         AnchorPane root = FXMLLoader.load(getClass().getResource("/fxml/Client.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
+
+        // =======================================
+        // *------------- Info Mode -------------*
+        // =======================================
+        hboxModeSim.setLayoutX(1780);
+        hboxModeSim.setLayoutY(10);
+        root.getChildren().add(hboxModeSim);
+        Label modeSim = new Label("Croissance");
+        modeSim.getStyleClass().add("modeInfo");
+        hboxModeSim.getChildren().add(modeSim);
 
         // =======================================
         // *----------- Import Grille -----------*

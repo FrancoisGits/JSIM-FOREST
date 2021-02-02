@@ -1,6 +1,8 @@
 package org.cesi.jsimforest;
 
+import java.math.RoundingMode;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -195,8 +197,11 @@ public class Grid implements CRUDInterface {
         return maxIdGrid;
     }
 
-    public EnumMap<State, Double> getCellsDensity() {
-        EnumMap<State, Double> cellsDensity = new EnumMap<>(State.class);
+    public EnumMap<State, String> getCellsDensity() {
+        EnumMap<State, String> cellsDensity = new EnumMap<>(State.class);
+        DecimalFormat df = new DecimalFormat("#.#####");
+        df.setRoundingMode(RoundingMode.CEILING);
+
         double matrixSize = this.getColumn() * this.getRow();
         int youngTreeCount = 0;
         int bushCount = 0;
@@ -237,12 +242,12 @@ public class Grid implements CRUDInterface {
         double burningDensity = burningCount / matrixSize;
         double infectedDensity = infectedCount / matrixSize;
 
-        cellsDensity.put(State.youngTree, youngTreeDensity);
-        cellsDensity.put(State.bush, bushDensity);
-        cellsDensity.put(State.tree, treeDensity);
-        cellsDensity.put(State.ashes, ashesDensity);
-        cellsDensity.put(State.burning, burningDensity);
-        cellsDensity.put(State.infected, infectedDensity);
+        cellsDensity.put(State.youngTree, df.format(youngTreeDensity));
+        cellsDensity.put(State.bush, df.format(bushDensity));
+        cellsDensity.put(State.tree, df.format(treeDensity));
+        cellsDensity.put(State.ashes, df.format(ashesDensity));
+        cellsDensity.put(State.burning, df.format(burningDensity));
+        cellsDensity.put(State.infected, df.format(infectedDensity));
 
         return cellsDensity;
     }

@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cesi.jsimforest.ClientController">
-   <VBox alignment="CENTER" layoutX="26.0" prefHeight="200.0" prefWidth="249.0">
-      <children>
-         <Label text="Erreur lors de l'enregistrement" textFill="RED">
-            <VBox.margin>
-               <Insets bottom="10.0" />
-            </VBox.margin>
-            <font>
-               <Font name="System Bold" size="13.0" />
-            </font>
-         </Label>
-         <Label alignment="CENTER" text="Entrer le Nom de votre Sauvegarde :">
-            <padding>
-               <Insets bottom="20.0" />
-            </padding>
-         </Label>
-         <TextField fx:id="textFieldSaveName" alignment="CENTER" onAction="#setSaveName" />
-         <Button alignment="CENTER" mnemonicParsing="false" onAction="#setSaveName" text="Valider">
-            <VBox.margin>
-               <Insets top="20.0" />
-            </VBox.margin>
-         </Button>
-      </children>
-   </VBox>
+<AnchorPane prefHeight="50.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cesi.jsimforest.ClientController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="230.0">
+         <children>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets right="25.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@../images/error.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" text="Grille Vide" textFill="RED">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>

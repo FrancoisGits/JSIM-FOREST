@@ -2,10 +2,8 @@ package org.cesi.jsimforest;
 
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +29,8 @@ public class ClientController implements Initializable {
     public TextField textFieldSpeed;
     public TextField textFieldSaveName;
     public static State state;
+    private static int i;
+    private static boolean goodName;
 
     protected static Configuration config =  new Configuration(1, 1, 100, 100);
     protected static Simulation sim = new Simulation(config);
@@ -45,9 +45,11 @@ public class ClientController implements Initializable {
     public void setWidthGrid(KeyEvent keyEvent) throws IOException {
         textFieldWidth.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
         if(textFieldWidth.getText().matches("^[0-9]*$")){
+            textFieldWidth.getStyleClass().removeAll("true", "false");
             textFieldWidth.getStyleClass().add("true");
         }
         else {
+            textFieldWidth.getStyleClass().removeAll("true", "false");
             textFieldWidth.getStyleClass().add("false");
         }
     }
@@ -55,9 +57,11 @@ public class ClientController implements Initializable {
     public void setHeightGrid(KeyEvent keyEvent) {
         textFieldHeight.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
         if(textFieldHeight.getText().matches("^[0-9]*$")){
+            textFieldHeight.getStyleClass().removeAll("true", "false");
             textFieldHeight.getStyleClass().add("true");
         }
         else {
+            textFieldHeight.getStyleClass().removeAll("true", "false");
             textFieldHeight.getStyleClass().add("false");
         }
     }
@@ -65,9 +69,11 @@ public class ClientController implements Initializable {
     public void setStep(KeyEvent keyEvent) {
         textFieldStep.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
         if(textFieldStep.getText().matches("^[0-9]*$")){
+            textFieldStep.getStyleClass().removeAll("true", "false");
             textFieldStep.getStyleClass().add("true");
         }
         else {
+            textFieldStep.getStyleClass().removeAll("true", "false");
             textFieldStep.getStyleClass().add("false");
         }
     }
@@ -75,22 +81,21 @@ public class ClientController implements Initializable {
     public void setSpeed(KeyEvent keyEvent) {
         textFieldSpeed.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
         if(textFieldSpeed.getText().matches("^[0-9]*$")){
+            textFieldSpeed.getStyleClass().removeAll("true", "false");
             textFieldSpeed.getStyleClass().add("true");
         }
         else {
+            textFieldSpeed.getStyleClass().removeAll("true", "false");
             textFieldSpeed.getStyleClass().add("false");
         }
     }
 
     public void applyConfig(ActionEvent actionEvent) {
         config = new Configuration(Integer.parseInt(textFieldSpeed.getText()), Integer.parseInt(textFieldStep.getText()), Integer.parseInt(textFieldHeight.getText()), Integer.parseInt(textFieldWidth.getText()));
-//        config.setStepsPerSecond(Integer.parseInt(textFieldSpeed.getText()));
-//        config.setStepsNumber(Integer.parseInt(textFieldStep.getText()));
-//        config.setColumnNumber(Integer.parseInt(textFieldHeight.getText()));
-//        config.setRowNumber(Integer.parseInt(textFieldWidth.getText()));
         sim = new Simulation(config);
         Client.updateGrid(config.getRowNumber(), config.getColumnNumber());
         Client.updateStep();
+        Client.updateDensity();
     }
 
     public void setSelectedEmpty(ActionEvent actionEvent) {
@@ -120,11 +125,65 @@ public class ClientController implements Initializable {
     public static State getStateSelected() { return state; }
 
     public void playButton(ActionEvent actionEvent) throws InterruptedException, IOException {
-        sim.process();
+        int d = 0;
+        int v = 0;
+        for(int k = 0; k < config.getColumnNumber(); k++){
+            for (int j = 0; j < config.getRowNumber(); j++){
+                switch(sim.getGrid().getMatrix()[k][j].getState()){
+                    case bush:
+                    case youngTree:
+                    case tree:
+                        v = v + 1;
+                        System.out.println(v);
+                        break;
+                    case infected:
+                    case burning:
+                        d = d + 1;
+                        System.out.println(d);
+                        break;
+                }
+            }
+        }
+        if (v < 1 && d < 1){
+            popUpErreur();
+        }
+        if (d >= 1) {
+            System.out.println("Passage en mode Destruction");
+        }
+        if (v >= 1 && d <= 0){
+            sim.process();
+        }
     }
 
     public void stepButton(ActionEvent actionEvent) throws IOException {
-        sim.processOneStep();
+        int d = 0;
+        int v = 0;
+        for(int k = 0; k < config.getColumnNumber(); k++){
+            for (int j = 0; j < config.getRowNumber(); j++){
+                switch(sim.getGrid().getMatrix()[k][j].getState()){
+                    case bush:
+                    case youngTree:
+                    case tree:
+                        v = v + 1;
+                        System.out.println(v);
+                        break;
+                    case infected:
+                    case burning:
+                        d = d + 1;
+                        System.out.println(d);
+                        break;
+                }
+            }
+        }
+        if (v < 1 && d < 1){
+            popUpErreur();
+        }
+        if (d >= 1) {
+            System.out.println("Passage en mode Destruction");
+        }
+        if (v >= 1 && d <= 0){
+            sim.processOneStep();
+        }
     }
 
     public void pauseButton(ActionEvent actionEvent) {
@@ -135,13 +194,16 @@ public class ClientController implements Initializable {
         sim = new Simulation(config);
         Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
         popUp.close();
+        Client.updateStep();
+        Client.updateDensity();
     }
 
     public void saveSim(ActionEvent actionEvent) throws IOException {
-        AnchorPane root = FXMLLoader.load(getClass().getResource("/fxml/PopUp.fxml"));
+        AnchorPane root = FXMLLoader.load(getClass().getResource("/fxml/PopUpSave.fxml"));
         Scene savePopUp = new Scene(root);
         popUpProfil.setScene(savePopUp);
         popUpProfil.show();
+
     }
 
     public void exportCSV(ActionEvent actionEvent) {
@@ -161,10 +223,10 @@ public class ClientController implements Initializable {
         readAllSave = sim.readAllSimulation();
         System.out.println(readAllSave);
         grid.setHgap(10);
-        for(int i = 0; i < readAllSave.size(); i++) {
+        for(i = 0; i < readAllSave.size(); i++) {
             Label simName = new Label();
             simName.setText(readAllSave.get(i));
-            simName.setMaxWidth(350);
+            simName.setMaxWidth(400);
             simName.setMaxHeight(10);
             simName.getStyleClass().add("empty");
             simName.setOnMouseClicked(e -> {System.out.println("importation");});
@@ -172,42 +234,75 @@ public class ClientController implements Initializable {
             importButton.setOnMouseClicked(e -> {importSelectedSim(simName.getText());});
             importButton.setMaxHeight(5);
             importButton.setMaxWidth(100);
-            grid.add(importButton, 2, i);
-            grid.add(simName, 1, i);
+            Button deleteButton = new Button();
+            deleteButton.getStyleClass().add("deleteButton");
+            deleteButton.setMaxHeight(10);
+            deleteButton.setMaxWidth(10);
+            deleteButton.setOnMouseClicked(e -> {
+                System.out.println("delete");
+//                sim.deleteOneSimulation(readAllSave.get(i));
+            });
+            grid.add(deleteButton, 1, i);
+            grid.add(simName, 2, i);
+            grid.add(importButton, 3, i);
         }
         popUpProfil.setScene(importPopUp);
         popUpProfil.show();
     }
 
     public void importSelectedSim(String selectedSimulation) {
-        String simulationDateTime = selectedSimulation.substring(selectedSimulation.indexOf(":")+1);
-        String simulationName = selectedSimulation.substring(0,selectedSimulation.indexOf(":"));
+        String simulationDateTime = selectedSimulation.substring(selectedSimulation.indexOf(":") + 1);
+        String simulationName = selectedSimulation.substring(0, selectedSimulation.indexOf(":"));
         Map<String, Integer> simInfos = sim.readOneSimulation(simulationName, simulationDateTime);
         Map<String, Integer> configInfos = sim.getConfig().readOneConfig(simInfos.get("ID_Configuration"));
         Map<String, Integer> gridInfos = sim.getGrid().readOneGrid(simInfos.get("ID_Grid"));
         Map<String, String> cellsInfos = sim.getGrid().readAllCellsInOneGrid(simInfos.get("ID_Grid"));
         config = new Configuration(configInfos.get("stepsPerSecond"), configInfos.get("stepNumber"), configInfos.get("rowNumber"), configInfos.get("columnNumber"));
         sim = new Simulation(config);
-        for (int i = 0; i < sim.getGrid().getMatrix().length ; i++) {
+        sim.setStep(simInfos.get("steps"));
+        for (int i = 0; i < sim.getGrid().getMatrix().length; i++) {
             for (int j = 0; j < sim.getGrid().getMatrix()[i].length; j++) {
                 String stateAndAge = cellsInfos.get(Integer.toString(i) + ':' + Integer.toString(j));
                 State state = State.valueOf(stateAndAge.substring(0, stateAndAge.indexOf(":")));
-                int age = Integer.parseInt(stateAndAge.substring(stateAndAge.indexOf(":")+1));
+                int age = Integer.parseInt(stateAndAge.substring(stateAndAge.indexOf(":") + 1));
                 sim.getGrid().getMatrix()[i][j].setState(state);
                 sim.getGrid().getMatrix()[i][j].setAge(age);
             }
         }
         Client.updateGrid(sim.getGrid().getRow(), sim.getGrid().getColumn());
+        Client.updateStep();
+        Client.updateDensity();
         popUpProfil.close();
+    }
+
+    public void verifySaveName(KeyEvent keyEvent) {
+        if(textFieldSaveName.getText().matches("^[a-z,A-Z]*$")) {
+            textFieldSaveName.getStyleClass().removeAll("true", "false");
+            textFieldSaveName.getStyleClass().add("true");
+            goodName = true;
+        }
+        else {
+            textFieldSaveName.getStyleClass().removeAll("true", "false");
+            textFieldSaveName.getStyleClass().add("false");
+            goodName = false;
+        }
     }
 
     public void setSaveName(ActionEvent actionEvent) throws InterruptedException, IOException, SQLException {
         popUpProfil.close();
-        sim.saveEntireSimulation(textFieldSaveName.getText());
+        if(goodName) {
+            sim.saveEntireSimulation(textFieldSaveName.getText());
+        }
+        else {
+            AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpNameErreurSave.fxml"));
+            Scene popUpErreur = new Scene(root);
+            popUpProfil.setScene(popUpErreur);
+            popUpProfil.show();
+        }
     }
 
-    public static void popUpErreur() throws IOException {
-        AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpErreur.fxml"));
+    public static void popUpErreurSave() throws IOException {
+        AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpErreurSave.fxml"));
         Scene popUpErreur = new Scene(root);
         popUpProfil.setScene(popUpErreur);
         popUpProfil.show();
@@ -219,7 +314,6 @@ public class ClientController implements Initializable {
         popUp.setX(1720);
         popUp.setY(1080);
         popUp.setScene(popUpValider);
-        popUp.initStyle(StageStyle.UNDECORATED);
         popUp.show();
         delay.setOnFinished( event -> popUp.close() );
         delay.play();
@@ -228,16 +322,36 @@ public class ClientController implements Initializable {
         AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpFinSim.fxml"));
         Scene popUpValider = new Scene(root);
         popUpValider.getStylesheets().add(ClientController.class.getResource("/css/Client.css").toExternalForm());
-        popUp.setScene(popUpValider);
-        popUp.show();
+        popUpProfil.setScene(popUpValider);
+        popUpProfil.show();
     }
 
     public void closePopUp(ActionEvent actionEvent) {
-        popUp.close();
+        popUpProfil.close();
     }
 
     public void modeDestruction(ActionEvent actionEvent){
         System.out.println("destruction");
-        popUp.close();
+        popUpProfil.close();
+    }
+    public void popUpErreur() throws IOException {
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpErreur.fxml"));
+        Scene popUpValider = new Scene(root);
+        popUp.setX(1700);
+        popUp.setY(1080);
+        popUp.setScene(popUpValider);
+        popUp.show();
+        delay.setOnFinished( event -> popUp.close() );
+        delay.play();
+    }
+
+    public void newSim(ActionEvent actionEvent) {
+        instanceAlive = false;
+        sim = new Simulation(config);
+        Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
+        popUpProfil.close();
+        Client.updateStep();
+        Client.updateDensity();
     }
 }

@@ -32,6 +32,7 @@ public class Simulation implements CRUDInterface {
      * Method to process the simulation until it reach the maximum steps
      */
     public void process() throws InterruptedException, IOException {
+        ClientController.instanceAlive = true;
         int interval =  (int) (1000 / this.getConfig().getStepsPerSecond());
         new Thread(() -> {
         while (step < config.getStepsNumber() && ClientController.instanceAlive) {
@@ -118,7 +119,7 @@ public class Simulation implements CRUDInterface {
             }
             System.out.println(this.getGrid().getCellsDensity());
             Client.updateGrid(this.getConfig().getRowNumber(), this.getConfig().getColumnNumber());
-            Client.updateStep();
+            Client.updateStepDuringSim();
             Client.updateDensity();
             step += 1;
         }
@@ -129,6 +130,10 @@ public class Simulation implements CRUDInterface {
 
     public int getStep() {
         return step;
+    }
+
+    public void setStep(int step){
+        this.step = step;
     }
 
     public  Grid getGrid() {
@@ -251,7 +256,7 @@ public class Simulation implements CRUDInterface {
             ClientController.popUpValider();
         } catch (Exception e) {
             e.printStackTrace();
-            ClientController.popUpErreur();
+            ClientController.popUpErreurSave();
         }
     }
 
