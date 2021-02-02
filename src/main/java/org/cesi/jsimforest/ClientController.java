@@ -134,23 +134,28 @@ public class ClientController implements Initializable {
                     case youngTree:
                     case tree:
                         v = v + 1;
-                        System.out.println(v);
                         break;
                     case infected:
                     case burning:
                         d = d + 1;
-                        System.out.println(d);
                         break;
                 }
             }
         }
         if (v < 1 && d < 1){
             popUpErreur();
+
         }
         if (d >= 1) {
-            System.out.println("Passage en mode Destruction");
+            if(!ClientController.instanceAlive) {
+                popUpErreur();
+            } else {
+                sim.process();
+            }
         }
-        if (v >= 1 && d <= 0){
+        if(!ClientController.instanceAlive) {
+            popUpErreur();
+        } else {
             sim.process();
         }
     }
@@ -165,12 +170,10 @@ public class ClientController implements Initializable {
                     case youngTree:
                     case tree:
                         v = v + 1;
-                        System.out.println(v);
                         break;
                     case infected:
                     case burning:
                         d = d + 1;
-                        System.out.println(d);
                         break;
                 }
             }
@@ -179,7 +182,7 @@ public class ClientController implements Initializable {
             popUpErreur();
         }
         if (d >= 1) {
-            System.out.println("Passage en mode Destruction");
+            sim.processOneStep();
         }
         if (v >= 1 && d <= 0){
             sim.processOneStep();

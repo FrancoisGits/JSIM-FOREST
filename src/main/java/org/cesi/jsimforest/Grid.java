@@ -138,10 +138,10 @@ public class Grid implements CRUDInterface {
             int width = 0;
             if (rs.next()) {
                 height = rs.getInt("height");
-                width = rs.getInt("stepNumber");
+                width = rs.getInt("width");
             }
             gridInfos.put("height",height);
-            gridInfos.put("stepNumber", width);
+            gridInfos.put("width", width);
         }catch (SQLException e) {
             System.out.println(e.getMessage());
         }

@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Cell implements CRUDInterface {
 
@@ -39,9 +40,12 @@ public class Cell implements CRUDInterface {
     public State isEvolving(EnumMap<State, Integer> neighborsStatesNumbers) {
         State actualState = getState();
         State newState = actualState;
+        int probability = (int) Math.floor(Math.random() * 100);
+        System.out.println(probability);
         int age = getAge();
         int treeCount = neighborsStatesNumbers.get(State.tree);
         int bushCount = neighborsStatesNumbers.get(State.bush);
+        int burningCount = neighborsStatesNumbers.get(State.burning);
         switch (actualState) {
             case empty:
                 if (treeCount >= 2 || bushCount >= 3 || (treeCount == 1 && bushCount == 2)) {
@@ -52,10 +56,37 @@ public class Cell implements CRUDInterface {
                 if (treeCount <= 3 && bushCount <= 3) {
                     newState = State.bush;
                 }
+                if (burningCount >= 1) {
+                    if(probability <= 25) {
+                        newState = State.burning;
+                    }
+                }
                 break;
             case bush:
                 if(age >= 2) {
                     newState = State.tree;
+                }
+                if (burningCount >= 1) {
+                    if(probability <= 50) {
+                        newState = State.burning;
+                    }
+                }
+                break;
+            case tree:
+                if (burningCount >= 1) {
+                    if(probability <= 75) {
+                        newState = State.burning;
+                    }
+                }
+                break;
+            case burning:
+                if (age >= 1 ) {
+                    newState = State.ashes;
+                }
+                break;
+            case ashes:
+                if (age >= 1) {
+                    newState = State.empty;
                 }
                 break;
         }

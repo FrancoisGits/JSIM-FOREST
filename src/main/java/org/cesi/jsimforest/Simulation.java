@@ -35,7 +35,10 @@ public class Simulation implements CRUDInterface {
         ClientController.instanceAlive = true;
         int interval =  (int) (1000 / this.getConfig().getStepsPerSecond());
         new Thread(() -> {
-        while (step < config.getStepsNumber() && ClientController.instanceAlive) {
+        while (step < config.getStepsNumber()) {
+            if(!ClientController.instanceAlive) {
+                break;
+            }
 //            System.out.println("Matrix : ");
 //            System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
 //            System.out.println("Step : " + this.getStep());
@@ -77,6 +80,9 @@ public class Simulation implements CRUDInterface {
             ArrayList<Cell> evolveInYoungTree = new ArrayList<>();
             ArrayList<Cell> evolveInBush = new ArrayList<>();
             ArrayList<Cell> evolveInTree = new ArrayList<>();
+            ArrayList<Cell> evolveInBurning = new ArrayList<>();
+            ArrayList<Cell> evolveInAshes = new ArrayList<>();
+            ArrayList<Cell> evolveInEmpty = new ArrayList<>();
 
             for (int i = 0; i < getGrid().getMatrix().length; i++) {
                 for (int j = 0; j < getGrid().getMatrix().length; j++) {
@@ -98,6 +104,15 @@ public class Simulation implements CRUDInterface {
                             case tree:
                                 evolveInTree.add(getGrid().getMatrix()[i][j]);
                                 break;
+                            case burning:
+                                evolveInBurning.add(getGrid().getMatrix()[i][j]);
+                                break;
+                            case ashes:
+                                evolveInAshes.add(getGrid().getMatrix()[i][j]);
+                                break;
+                            case empty:
+                                evolveInEmpty.add(getGrid().getMatrix()[i][j]);
+                                break;
                         }
                     }
                 }
@@ -115,6 +130,18 @@ public class Simulation implements CRUDInterface {
             }
             for (Cell cell : evolveInTree) {
                 cell.setState(State.tree);
+                cell.setAge(0);
+            }
+            for (Cell cell : evolveInBurning) {
+                cell.setState(State.burning);
+                cell.setAge(0);
+            }
+            for (Cell cell : evolveInAshes) {
+                cell.setState(State.ashes);
+                cell.setAge(0);
+            }
+            for (Cell cell : evolveInEmpty) {
+                cell.setState(State.empty);
                 cell.setAge(0);
             }
             System.out.println(this.getGrid().getCellsDensity());
