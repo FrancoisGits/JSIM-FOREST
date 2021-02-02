@@ -5,7 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
@@ -144,14 +148,26 @@ public class ClientController implements Initializable {
     public void importSim(ActionEvent actionEvent) throws IOException, SQLException {
         AnchorPane root = FXMLLoader.load(getClass().getResource("/fxml/PopUpImport.fxml"));
         Scene importPopUp = new Scene(root);
+        importPopUp.getStylesheets().add(getClass().getResource("/css/Client.css").toExternalForm());
         GridPane grid = new GridPane();
+        grid.setLayoutX(10);
+        grid.setLayoutY(50);
         root.getChildren().add(grid);
-        ArrayList<String> readAllSave = new ArrayList<>();
+        ArrayList<String> readAllSave;
         readAllSave = sim.readAllSimulation();
+        grid.setHgap(10);
         for(int i = 0; i < readAllSave.size(); i++) {
             Label simName = new Label();
             simName.setText(readAllSave.get(i));
-            grid.add(simName, i, i);
+            simName.setMaxWidth(350);
+            simName.setMaxHeight(10);
+            simName.getStyleClass().add("empty");
+            simName.setOnMouseClicked(e -> {System.out.println("importation");});
+            Button importButton = new Button("Importer");
+            importButton.setMaxHeight(5);
+            importButton.setMaxWidth(100);
+            grid.add(importButton, 2, i);
+            grid.add(simName, 1, i);
         }
         popUpProfil.setScene(importPopUp);
         popUpProfil.show();
