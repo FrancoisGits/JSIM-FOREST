@@ -52,8 +52,18 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
-.modeInfo {
+.modeCroissance {
     -fx-font-weight: bold;
     -fx-font-size: 20px;
     -fx-text-fill: green;
+}
+.modeFeu {
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: red;
+}
+.modeInfected {
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: #d036bd;
 }

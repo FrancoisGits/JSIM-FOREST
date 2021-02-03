@@ -48,6 +48,7 @@ public class Simulation implements CRUDInterface {
                     Platform.runLater(() -> {
                         try {
                             processOneStep();
+                            ClientController.updaterMode();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="200.0" prefWidth="323.0" stylesheets="@../css/Client.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cesi.jsimforest.ClientController">
+   <VBox alignment="CENTER" layoutX="14.0" prefHeight="200.0" prefWidth="297.0">
+      <children>
+         <Label text="Steps Incorrect !" textFill="RED">
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="13.0" />
+            </font>
+         </Label>
+         <Label alignment="CENTER" prefHeight="36.0" prefWidth="297.0" text="Entrer le nombre de pas supplémentaires :">
+            <padding>
+               <Insets bottom="20.0" />
+            </padding>
+         </Label>
+         <TextField fx:id="textFieldStepContinueSim" alignment="CENTER" onKeyReleased="#verifyStepContinueSim" />
+         <Button alignment="CENTER" mnemonicParsing="false" onAction="#setNewSteps" text="Valider">
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+         </Button>
+      </children>
+   </VBox>
+</AnchorPane>

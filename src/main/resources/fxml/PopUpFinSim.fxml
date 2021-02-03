@@ -28,7 +28,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#newSim" prefHeight="26.0" prefWidth="250.0" text="Nouvelle Simulation" />
             <Button mnemonicParsing="false" onAction="#exportCSV" prefHeight="26.0" prefWidth="250.0" text="Exporter les Résultats en CSV" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#modeDestruction" prefHeight="26.0" prefWidth="250.0" text="Passer en mode Destruction" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onAction="#continueSim" prefHeight="26.0" prefWidth="250.0" text="Continuer Simulation" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" onAction="#closePopUp" prefHeight="26.0" prefWidth="250.0" text="Retour à la Sim" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
