@@ -70,6 +70,7 @@ public class Simulation implements CRUDInterface {
             ArrayList<Cell> evolveInTree = new ArrayList<>();
             ArrayList<Cell> evolveInBurning = new ArrayList<>();
             ArrayList<Cell> evolveInAshes = new ArrayList<>();
+            ArrayList<Cell> evolveInInfected = new ArrayList<>();
             ArrayList<Cell> evolveInEmpty = new ArrayList<>();
 
             for (int i = 0; i < getGrid().getMatrix().length; i++) {
@@ -97,6 +98,9 @@ public class Simulation implements CRUDInterface {
                                 break;
                             case ashes:
                                 evolveInAshes.add(getGrid().getMatrix()[i][j]);
+                                break;
+                            case infected:
+                                evolveInInfected.add(getGrid().getMatrix()[i][j]);
                                 break;
                             case empty:
                                 evolveInEmpty.add(getGrid().getMatrix()[i][j]);
@@ -126,6 +130,10 @@ public class Simulation implements CRUDInterface {
             }
             for (Cell cell : evolveInAshes) {
                 cell.setState(State.ashes);
+                cell.setAge(0);
+            }
+            for (Cell cell : evolveInInfected) {
+                cell.setState(State.infected);
                 cell.setAge(0);
             }
             for (Cell cell : evolveInEmpty) {
