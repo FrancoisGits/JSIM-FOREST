@@ -32,44 +32,28 @@ public class Simulation implements CRUDInterface {
      * Method to process the simulation until it reach the maximum steps
      */
     public void process() throws InterruptedException, IOException {
-        ClientController.instanceAlive = true;
-        int interval =  (int) (1000 / this.getConfig().getStepsPerSecond());
-        new Thread(() -> {
-        while (step < config.getStepsNumber()) {
-            if(!ClientController.instanceAlive) {
-                break;
-            }
-//            System.out.println("Matrix : ");
-//            System.out.println(Arrays.deepToString(getGrid().getMatrix()).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
-//            System.out.println("Step : " + this.getStep());
-//            System.out.println("Liste Cells : ");
-//            for (int i = 0; i < getGrid().getMatrix().length; i++) {
-//                for (int j = 0; j < getGrid().getMatrix()[0].length; j++) {
-//                    System.out.println(getGrid().getMatrix()[i][j].infoCell());
-//                }
-//            }
-//            int x = 1;
-//            int y = 2;
-//            System.out.println("Cell target : ");
-//            System.out.println(getGrid().getMatrix()[x][y].infoCell());
-//            System.out.println("Voisines de Cell target : ");
-//            System.out.println(getGrid().getNeighborsOfOneCell(x, y));
-//            System.out.println("Cell had : " + getGrid().getNeighborsOfOneCell(x, y).size() + " neighbors");
-//            System.out.println("voisines states : " + getGrid().getStateOfNeighborsCell(getGrid().getNeighborsOfOneCell(x, y)));
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                try {
-                    processOneStep();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            int interval = (int) (1000 / this.getConfig().getStepsPerSecond());
+            new Thread(() -> {
+                while (step < config.getStepsNumber()) {
+                    if(!ClientController.instanceAlive){
+                        System.out.println("Thread : " + Thread.currentThread());
+                        break;
+                    }
+                    System.out.println(this.toString() + "|| Steps : " + this.getStep());
+                    try {
+                        Thread.sleep(interval);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        try {
+                            processOneStep();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
-            });
-        }
-        }).start();
+            }).start();
     }
 
     /**
@@ -144,7 +128,6 @@ public class Simulation implements CRUDInterface {
                 cell.setState(State.empty);
                 cell.setAge(0);
             }
-            System.out.println(this.getGrid().getCellsDensity());
             Client.updateGrid(this.getConfig().getRowNumber(), this.getConfig().getColumnNumber());
             Client.updateStepDuringSim();
             Client.updateDensity();
@@ -227,8 +210,6 @@ public class Simulation implements CRUDInterface {
         String req = MessageFormat.format("SELECT ID, steps, ID_Configuration, ID_Grid FROM simulation WHERE name LIKE {0} AND insert_Time = {1}", simulationName, simulationInsertTime);
         try{
             ResultSet rs = read(req);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
             int idSim = 0;
             int steps = 0;
             int idConfig = 0;

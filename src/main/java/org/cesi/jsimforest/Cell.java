@@ -41,7 +41,6 @@ public class Cell implements CRUDInterface {
         State actualState = getState();
         State newState = actualState;
         int probability = (int) Math.floor(Math.random() * 100);
-        System.out.println(probability);
         int age = getAge();
         int treeCount = neighborsStatesNumbers.get(State.tree);
         int bushCount = neighborsStatesNumbers.get(State.bush);

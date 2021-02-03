@@ -35,11 +35,12 @@ public class ClientController implements Initializable {
     protected static Configuration config =  new Configuration(1, 1, 100, 100);
     protected static Simulation sim = new Simulation(config);
     protected static boolean instanceAlive = true;
+    protected static int playNumber = 0;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("ok");
+
     }
 
     public void setWidthGrid(KeyEvent keyEvent) throws IOException {
@@ -130,12 +131,12 @@ public class ClientController implements Initializable {
         for(int k = 0; k < config.getColumnNumber(); k++){
             for (int j = 0; j < config.getRowNumber(); j++){
                 switch(sim.getGrid().getMatrix()[k][j].getState()){
-                    case bush:
-                    case youngTree:
+                    //case bush:
+                    //case youngTree:
                     case tree:
                         v = v + 1;
                         break;
-                    case infected:
+                    //case infected:
                     case burning:
                         d = d + 1;
                         break;
@@ -144,19 +145,17 @@ public class ClientController implements Initializable {
         }
         if (v < 1 && d < 1){
             popUpErreur();
-
         }
-        if (d >= 1) {
-            if(!ClientController.instanceAlive) {
+        if (d >= 1 || v >= 1 ) {
+            if(!ClientController.instanceAlive && playNumber >= 1) {
                 popUpErreur();
             } else {
-                sim.process();
+                if (playNumber < 1) {
+                    instanceAlive = true;
+                    sim.process();
+                    playNumber += 1;
+                }
             }
-        }
-        if(!ClientController.instanceAlive) {
-            popUpErreur();
-        } else {
-            sim.process();
         }
     }
 
@@ -178,6 +177,7 @@ public class ClientController implements Initializable {
                 }
             }
         }
+        // TODO: 03/02/2021  Revoir cette partie avec Théo
         if (v < 1 && d < 1){
             popUpErreur();
         }
@@ -199,6 +199,7 @@ public class ClientController implements Initializable {
         popUp.close();
         Client.updateStep();
         Client.updateDensity();
+        playNumber = 0;
     }
 
     public void saveSim(ActionEvent actionEvent) throws IOException {
@@ -224,7 +225,6 @@ public class ClientController implements Initializable {
         root.getChildren().add(grid);
         ArrayList<String> readAllSave;
         readAllSave = sim.readAllSimulation();
-        System.out.println(readAllSave);
         grid.setHgap(10);
         for(i = 0; i < readAllSave.size(); i++) {
             Label simName = new Label();
