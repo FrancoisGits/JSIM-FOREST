@@ -268,7 +268,6 @@ public class ClientController implements Initializable {
         instanceAlive = false;
         sim = new Simulation(config);
         Client.updateGrid(sim.getConfig().getRowNumber(), sim.getConfig().getColumnNumber());
-        popUp.close();
         Client.updateStep();
         Client.updateDensity();
         playNumber = 0;
@@ -439,12 +438,14 @@ public class ClientController implements Initializable {
         }
     }
     public void setNewSteps(ActionEvent actionEvent) throws InterruptedException, IOException {
-        popUpProfil.close();
         if(goodStep) {
             config.setStepsNumber(config.getStepsNumber() + Integer.parseInt(textFieldStepContinueSim.getText()));
             Client.updateStep();
+            playNumber = 0;
+            popUpProfil.close();
         }
         else {
+            popUpProfil.close();
             AnchorPane root = FXMLLoader.load(ClientController.class.getResource("/fxml/PopUpStepErreur.fxml"));
             Scene popUpErreur = new Scene(root);
             popUpProfil.setScene(popUpErreur);

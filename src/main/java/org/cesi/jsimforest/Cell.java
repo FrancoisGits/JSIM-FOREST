@@ -45,6 +45,7 @@ public class Cell implements CRUDInterface {
         int treeCount = neighborsStatesNumbers.get(State.tree);
         int bushCount = neighborsStatesNumbers.get(State.bush);
         int burningCount = neighborsStatesNumbers.get(State.burning);
+        int infectedCount = neighborsStatesNumbers.get(State.burning);
         switch (actualState) {
             case empty:
                 if (treeCount >= 2 || bushCount >= 3 || (treeCount == 1 && bushCount == 2)) {
@@ -60,12 +61,22 @@ public class Cell implements CRUDInterface {
                         newState = State.burning;
                     }
                 }
+                if (infectedCount >= 1) {
+                    if(probability <= 75) {
+                        newState = State.burning;
+                    }
+                }
                 break;
             case bush:
                 if(age >= 2) {
                     newState = State.tree;
                 }
                 if (burningCount >= 1) {
+                    if(probability <= 50) {
+                        newState = State.burning;
+                    }
+                }
+                if (infectedCount >= 1) {
                     if(probability <= 50) {
                         newState = State.burning;
                     }
@@ -77,12 +88,18 @@ public class Cell implements CRUDInterface {
                         newState = State.burning;
                     }
                 }
+                if (infectedCount >= 1) {
+                    if(probability <= 25) {
+                        newState = State.burning;
+                    }
+                }
                 break;
             case burning:
                 if (age >= 1 ) {
                     newState = State.ashes;
                 }
                 break;
+            case infected:
             case ashes:
                 if (age >= 1) {
                     newState = State.empty;
