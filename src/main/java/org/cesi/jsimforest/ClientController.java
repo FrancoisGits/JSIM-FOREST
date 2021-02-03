@@ -139,6 +139,9 @@ public class ClientController implements Initializable {
         int burning = 0;
         int vegetal = 0;
         int infected = 0;
+        if(pause == 1) {
+            pause = 0;
+        }
         for(int k = 0; k < config.getColumnNumber(); k++){
             for (int j = 0; j < config.getRowNumber(); j++){
                 switch(sim.getGrid().getMatrix()[k][j].getState()){
@@ -159,6 +162,10 @@ public class ClientController implements Initializable {
         }
         updaterMode();
         if (burning >= 1 || vegetal >= 1 || infected >= 1) {
+            if(sim.getPause()) {
+                sim.restart();
+                playNumber = 1;
+            }
             if(!ClientController.instanceAlive && playNumber >= 1) {
                 popUpErreurGrille();
             } else {
@@ -168,6 +175,7 @@ public class ClientController implements Initializable {
                     playNumber += 1;
                 }
             }
+
         }
     }
 
@@ -227,9 +235,6 @@ public class ClientController implements Initializable {
                 }
             }
         }
-        if (vegetal < 1 && burning < 1 && infected < 1){
-            popUpErreurGrille();
-        }
         if (burning < 1 && infected < 1) {
             String modeState = "";
             String modeStateDouble = "";
@@ -258,6 +263,8 @@ public class ClientController implements Initializable {
     }
 
     public void pauseButton(ActionEvent actionEvent) {
+        sim.pause();
+        playNumber = 0;
     }
 
     public void stopButton(ActionEvent actionEvent) {

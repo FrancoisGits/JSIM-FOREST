@@ -16,6 +16,7 @@ public class Simulation implements CRUDInterface {
     private int step;
     private Grid grid;
     private Configuration config;
+    private boolean pause;
 
     /**
      * Simulation Constructor
@@ -46,11 +47,13 @@ public class Simulation implements CRUDInterface {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                        try {
-                            processOneStep();
-                            ClientController.updaterMode();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (!this.pause) {
+                            try {
+                                processOneStep();
+                                ClientController.updaterMode();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -137,6 +140,18 @@ public class Simulation implements CRUDInterface {
         if (step == config.getStepsNumber()){
             ClientController.popUpFinSim();
         }
+    }
+
+    public void pause() {
+        this.pause = true;
+    }
+
+    public void restart() {
+        this.pause = false;
+    }
+
+    public boolean getPause() {
+        return this.pause;
     }
 
     public int getStep() {
