@@ -35,7 +35,6 @@ public class ClientController implements Initializable {
     protected static boolean instanceAlive = true;
     protected static int playNumber = 0;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {}
 
@@ -139,9 +138,7 @@ public class ClientController implements Initializable {
         int burning = 0;
         int vegetal = 0;
         int infected = 0;
-        if(pause == 1) {
-            pause = 0;
-        }
+
         for(int k = 0; k < config.getColumnNumber(); k++){
             for (int j = 0; j < config.getRowNumber(); j++){
                 switch(sim.getGrid().getMatrix()[k][j].getState()){

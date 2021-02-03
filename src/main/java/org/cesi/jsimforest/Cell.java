@@ -52,7 +52,7 @@ public class Cell implements CRUDInterface {
                 }
                 break;
             case youngTree:
-                if (treeCount <= 3 && bushCount <= 3) {
+                if ((treeCount + bushCount) <= 3) {
                     newState = State.bush;
                 }
                 if (burningCount >= 1) {
