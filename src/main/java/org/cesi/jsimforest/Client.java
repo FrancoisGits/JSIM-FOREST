@@ -280,11 +280,10 @@ public class Client extends Application {
         hboxDensity2.setLayoutY(58);
         root.getChildren().add(hboxDensity2);
         densityTree.setText("0.0");
-        densityTree.setMinWidth(255);
+        densityTree.setMinWidth(215);
         densityBush.setText("0.0");
-        densityBush.setMinWidth(200);
+        densityBush.setMinWidth(280);
         densityYoungTree.setText("0.0");
-        densityYoungTree.setMinWidth(110);
         densityBurning.setText("0.0");
         densityBurning.setMinWidth(210);
         densityAshes.setText("0.0");
