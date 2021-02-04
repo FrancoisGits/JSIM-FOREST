@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cesi.jsimforest.ClientController">
-    <HBox cache="true" cacheHint="SPEED" layoutX="1042.0" layoutY="83.0" prefHeight="27.0" prefWidth="800.0" spacing="50.0">
-        <Button mnemonicParsing="false" onAction="#importSim" prefHeight="26.0" prefWidth="200.0" text="Importer Configuration" />
-        <Button mnemonicParsing="false" onAction="#exportCSV" prefHeight="26.0" prefWidth="231.0" text="Exporter Configuration en CSV" />
-        <Button mnemonicParsing="false" onAction="#saveSim" prefHeight="26.0" prefWidth="213.0" text="Sauvegarder Configuration" />
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="1080.0" prefWidth="1920.0" styleClass="anchor"
+            xmlns="http://javafx.com/javafx/15.0.1" fx:controller="org.cesi.jsimforest.ClientController">
+    <HBox alignment="CENTER" cache="true" cacheHint="SPEED" layoutX="1042.0" layoutY="83.0" prefHeight="27.0"
+          prefWidth="822.0" spacing="50.0">
+        <Button mnemonicParsing="false" onAction="#importSim" prefHeight="26.0" prefWidth="200.0" styleClass="button"
+                text="Importer Configuration"/>
+        <Button mnemonicParsing="false" onAction="#exportCSV" prefHeight="26.0" prefWidth="231.0" styleClass="button"
+                text="Exporter Configuration en CSV"/>
+        <Button mnemonicParsing="false" onAction="#saveSim" prefHeight="26.0" prefWidth="213.0" styleClass="button"
+                text="Sauvegarder Configuration"/>
     </HBox>
-    <GridPane alignment="CENTER" layoutX="1042.0" layoutY="518.0" prefHeight="200.0" prefWidth="800.0" AnchorPane.rightAnchor="78.0">
+    <GridPane alignment="CENTER" layoutX="1042.0" layoutY="518.0" prefHeight="200.0" prefWidth="800.0"
+              AnchorPane.rightAnchor="78.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="94.0" minHeight="10.0" prefHeight="84.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="116.0" minHeight="10.0" prefHeight="116.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="94.0" minHeight="10.0" prefHeight="84.0" valignment="CENTER" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="116.0" minHeight="10.0" prefHeight="116.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <Label prefWidth="185.0" text="Elements :">
             <font>
@@ -53,14 +47,18 @@
             <children>
                   <RadioButton mnemonicParsing="false" onAction="#setSelectedTree" textFill="DARKGREEN">
                       <effect>
-                          <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0" surfaceScale="0.0">
+                          <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0"
+                                    surfaceScale="0.0">
                               <light>
                                   <Light.Distant>
                                       <color>
-                                          <Color green="0.3921568691730499" />
+                                          <Color green="0.2368421107530594"/>
                                       </color>
                                   </Light.Distant>
                               </light>
+                              <bumpInput>
+                                  <Shadow/>
+                              </bumpInput>
                           </Lighting>
                       </effect>
                       <toggleGroup>
@@ -86,17 +84,21 @@
          </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
             <children>
-                  <RadioButton mnemonicParsing="false" onAction="#setSelectedBush" textFill="#00ae00">
-                      <effect>
-                          <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0" surfaceScale="0.0">
-                              <light>
-                                  <Light.Distant>
-                                      <color>
-                                          <Color green="0.6842105388641357" />
-                                      </color>
-                                  </Light.Distant>
-                              </light>
-                          </Lighting>
+                <RadioButton mnemonicParsing="false" onAction="#setSelectedBush" textFill="#0a790a">
+                    <effect>
+                        <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0"
+                                  surfaceScale="0.0">
+                            <light>
+                                <Light.Distant>
+                                    <color>
+                                        <Color green="0.5"/>
+                                    </color>
+                                </Light.Distant>
+                            </light>
+                            <bumpInput>
+                                <Shadow/>
+                            </bumpInput>
+                        </Lighting>
                       </effect>
                       <toggleGroup>
                           <fx:reference source="group" />
@@ -126,14 +128,18 @@
             <children>
                   <RadioButton mnemonicParsing="false" onAction="#setSelectedYoungTree" textFill="#8fff87">
                       <effect>
-                          <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0" surfaceScale="0.0">
+                          <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0"
+                                    surfaceScale="0.0">
                               <light>
                                   <Light.Distant>
                                       <color>
-                                          <Color red="0.5409539341926575" green="0.9078947305679321" blue="0.5001827478408813" />
+                                          <Color red="0.2557098865509033" green="1.0" blue="0.15740740299224854"/>
                                       </color>
                                   </Light.Distant>
                               </light>
+                              <bumpInput>
+                                  <Shadow/>
+                              </bumpInput>
                           </Lighting>
                       </effect>
                       <toggleGroup>
@@ -181,34 +187,6 @@
                </ImageView>
             </children>
          </HBox>
-         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <children>
-                  <RadioButton mnemonicParsing="false" onAction="#setSelectedInfected" textFill="#d036bd">
-                      <effect>
-                          <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0" surfaceScale="0.0">
-                              <light>
-                                  <Light.Distant>
-                                      <color>
-                                          <Color red="0.8156862854957581" green="0.21176470816135406" blue="0.7411764860153198" />
-                                      </color>
-                                  </Light.Distant>
-                              </light>
-                          </Lighting>
-                      </effect>
-                      <toggleGroup>
-                          <fx:reference source="group" />
-                      </toggleGroup>
-                  <padding>
-                     <Insets right="22.0" />
-                  </padding>
-                  </RadioButton>
-               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../images/infected.png" />
-                  </image>
-               </ImageView>
-            </children>
-         </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <children>
                   <RadioButton mnemonicParsing="false" onAction="#setSelectedEmpty">
@@ -235,23 +213,23 @@
          </HBox>
         </GridPane>
     </GridPane>
-    <GridPane layoutX="1042.0" layoutY="151.0" prefHeight="300.0" prefWidth="800.0">
+    <GridPane layoutX="1042.0" layoutY="151.0" prefHeight="300.0" prefWidth="822.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="150.0" minHeight="20.0" prefHeight="100.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="201.0" minHeight="10.0" prefHeight="201.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="150.0" minHeight="20.0" prefHeight="100.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="201.0" minHeight="10.0" prefHeight="201.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <Label text="Configuration :">
             <font>
-                <Font name="System Bold" size="30.0" />
+                <Font name="System Bold" size="30.0"/>
             </font>
         </Label>
         <GridPane prefHeight="212.0" prefWidth="600.0" GridPane.rowIndex="1">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="394.0" minWidth="10.0" prefWidth="200.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="10.0" prefWidth="600.0"/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -260,46 +238,54 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <Label text="Largeur de la Grille :" GridPane.valignment="CENTER" />
-            <TextField fx:id="textFieldWidth" onKeyReleased="#setWidthGrid" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="textFieldWidth" onKeyReleased="#setWidthGrid" prefHeight="0.0" prefWidth="230.0"
+                       promptText="100" styleClass="textField" GridPane.columnIndex="1" GridPane.valignment="CENTER"/>
             <Label text="Hauteur de la Grille :" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <TextField fx:id="textFieldHeight" onKeyPressed="#setHeightGrid" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="textFieldHeight" onKeyPressed="#setHeightGrid" prefHeight="0.0" prefWidth="230.0"
+                       promptText="100" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                       GridPane.valignment="CENTER"/>
             <Label text="Nombre de Pas :" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <TextField fx:id="textFieldStep" onKeyPressed="#setStep" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <TextField fx:id="textFieldStep" onKeyPressed="#setStep" prefHeight="0.0" prefWidth="0.0" promptText="1"
+                       styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                       GridPane.valignment="CENTER"/>
             <Label text="Vitesse Exécution :" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <TextField fx:id="textFieldSpeed" onKeyPressed="#setSpeed" prefHeight="0.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <TextField fx:id="textFieldSpeed" onKeyPressed="#setSpeed" prefHeight="0.0" prefWidth="230.0" promptText="1"
+                       styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                       GridPane.valignment="CENTER"/>
         </GridPane>
     </GridPane>
     <HBox alignment="CENTER" layoutX="1028.0" layoutY="767.0" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
-        <Button mnemonicParsing="false" onAction="#playButton">
+        <Button mnemonicParsing="false" onAction="#playButton" styleClass="buttonSim">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../images/play.png" />
+                    <Image url="@../images/play.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#stepButton">
+        <Button mnemonicParsing="false" onAction="#stepButton" styleClass="buttonSim">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../images/play-and-pause-button.png" />
+                    <Image url="@../images/play-and-pause-button.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#pauseButton">
+        <Button mnemonicParsing="false" onAction="#pauseButton" styleClass="buttonSim">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../images/pause-button.png" />
+                    <Image url="@../images/pause-button.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#stopButton">
+        <Button mnemonicParsing="false" onAction="#stopButton" styleClass="buttonSim">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../images/stop-button.png" />
+                    <Image url="@../images/stop-button.png"/>
                 </ImageView>
             </graphic>
         </Button>
     </HBox>
-    <Button layoutX="1353.0" layoutY="473.0" mnemonicParsing="false" onAction="#applyConfig" text="Valider la Configuration" />
+    <Button layoutX="1353.0" layoutY="473.0" mnemonicParsing="false" onAction="#applyConfig" styleClass="button"
+            text="Valider la Configuration"/>
    <GridPane layoutX="45.0" prefHeight="87.0" prefWidth="724.0">
      <columnConstraints>
        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="217.66665649414062" />
@@ -333,12 +319,6 @@
                 <children>
                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff0000" height="15.0" stroke="BLACK" strokeType="INSIDE" width="15.0" />
                     <Label text="Feux :" />
-                </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="103.0" prefWidth="140.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                <children>
-                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d036bd" height="15.0" stroke="BLACK" strokeType="INSIDE" width="15.0" />
-                    <Label text="Infections :" />
                 </children>
             </HBox>
          <HBox alignment="CENTER_LEFT" prefHeight="106.0" prefWidth="135.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">

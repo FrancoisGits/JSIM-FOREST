@@ -3,6 +3,7 @@ package org.cesi.jsimforest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,10 +12,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
 
@@ -286,17 +292,20 @@ public class ClientController implements Initializable {
         root.getChildren().add(grid);
         ArrayList<String> readAllSave;
         readAllSave = sim.readAllSimulation();
+        grid.setPadding(new Insets(0, 10, 10, 0));
         grid.setHgap(10);
-        int i;
-        for(i = 0; i < readAllSave.size(); i++) {
+        grid.setVgap(5);
+        for (int i = 0; i < readAllSave.size(); i++) {
             Label simName = new Label();
             simName.setText(readAllSave.get(i));
+            simName.setPadding(new Insets(0, 0, 0, 10));
             simName.setMaxWidth(400);
-            simName.setMaxHeight(10);
-            simName.getStyleClass().add("empty");
-            simName.setOnMouseClicked(e -> System.out.println("importation"));
+            simName.setMaxHeight(50);
+            simName.getStyleClass().add("simNameImport");
+            simName.setOnMouseClicked(e -> importSelectedSim(simName.getText()));
             Button importButton = new Button("Importer");
             importButton.setOnMouseClicked(e -> importSelectedSim(simName.getText()));
+            importButton.getStyleClass().add("button");
             importButton.setMaxHeight(5);
             importButton.setMaxWidth(100);
             Button deleteButton = new Button();
@@ -316,6 +325,9 @@ public class ClientController implements Initializable {
     }
 
     public void importSelectedSim(String selectedSimulation) {
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+
         String simulationDateTime = selectedSimulation.substring(selectedSimulation.indexOf(":") + 1);
         String simulationName = selectedSimulation.substring(0, selectedSimulation.indexOf(":"));
         Map<String, Integer> simInfos = sim.readOneSimulation(simulationName, simulationDateTime);
@@ -337,6 +349,10 @@ public class ClientController implements Initializable {
         Client.updateGrid(sim.getGrid().getRow(), sim.getGrid().getColumn());
         Client.updateStep();
         Client.updateDensity();
+        textFieldHeight.setPromptText(Integer.toString(config.getColumnNumber()));
+        textFieldWidth.setPromptText(Integer.toString(config.getRowNumber()));
+        textFieldSpeed.setPromptText(nf.format(config.getStepsPerSecond()));
+        textFieldStep.setPromptText(Integer.toString(config.getStepsNumber()));
         popUpProfil.close();
     }
 

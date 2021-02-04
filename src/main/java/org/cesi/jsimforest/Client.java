@@ -2,7 +2,6 @@ package org.cesi.jsimforest;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -18,6 +17,7 @@ public class Client extends Application {
     private static final GridPane grid = new GridPane();
     private static final HBox hboxSteps = new HBox();
     private static final HBox hboxDensity = new HBox();
+    private static final HBox hboxDensity2 = new HBox();
     private static final VBox vboxModeSim = new VBox();
     private static final Label densityTree = new Label();
     private static final Label densityBush = new Label();
@@ -138,15 +138,16 @@ public class Client extends Application {
         hboxSteps.getChildren().add(steps);
     }
 
-    public static void updateDensity(){
+    public static void updateDensity() {
         hboxDensity.getChildren().clear();
+        hboxDensity2.getChildren().clear();
         densityTree.setText(ClientController.sim.getGrid().getCellsDensity().get(State.tree) + "");
         densityBush.setText(ClientController.sim.getGrid().getCellsDensity().get(State.bush) + "");
         densityYoungTree.setText(ClientController.sim.getGrid().getCellsDensity().get(State.youngTree) + "");
         densityBurning.setText(ClientController.sim.getGrid().getCellsDensity().get(State.burning) + "");
-        densityInfected.setText(ClientController.sim.getGrid().getCellsDensity().get(State.infected) + "");
         densityAshes.setText(ClientController.sim.getGrid().getCellsDensity().get(State.ashes) + "");
-        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityBurning, densityInfected, densityAshes);
+        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree);
+        hboxDensity2.getChildren().addAll(densityBurning, densityAshes);
     }
 
     public static void updateMode(String modeState, String modeStateDouble){
@@ -245,12 +246,6 @@ public class Client extends Application {
                                     newCell.getStyleClass().add("tree");
                                     ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.tree);
                                     break;
-                                case infected:
-                                    newCell.getChildren().clear();
-                                    newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
-                                    newCell.getStyleClass().add("infected");
-                                    ClientController.sim.getGrid().getMatrix()[Integer.parseInt(coordonateCell.get(0))][Integer.parseInt(coordonateCell.get(1))].setState(State.infected);
-                                    break;
                                 case burning:
                                     newCell.getChildren().clear();
                                     newCell.getStyleClass().removeAll("empty", "bush", "youngTree", "tree", "infected", "burning", "ashes");
@@ -279,20 +274,22 @@ public class Client extends Application {
         // *----------- Import Steps ------------*
         // =======================================
         hboxDensity.setLayoutX(125);
-        hboxDensity.setLayoutY(52);
+        hboxDensity.setLayoutY(15);
         root.getChildren().add(hboxDensity);
+        hboxDensity2.setLayoutX(125);
+        hboxDensity2.setLayoutY(58);
+        root.getChildren().add(hboxDensity2);
         densityTree.setText("0.0");
-        densityTree.setMinWidth(135);
+        densityTree.setMinWidth(255);
         densityBush.setText("0.0");
-        densityBush.setMinWidth(175);
+        densityBush.setMinWidth(200);
         densityYoungTree.setText("0.0");
         densityYoungTree.setMinWidth(110);
         densityBurning.setText("0.0");
-        densityBurning.setMinWidth(142);
-        densityInfected.setText("0.0");
-        densityInfected.setMinWidth(130);
+        densityBurning.setMinWidth(210);
         densityAshes.setText("0.0");
-        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree, densityBurning, densityInfected, densityAshes);
+        hboxDensity.getChildren().addAll(densityTree, densityBush, densityYoungTree);
+        hboxDensity2.getChildren().addAll(densityBurning, densityAshes);
 
         // =======================================
         // *----- Config Fenêtre Simulation -----*

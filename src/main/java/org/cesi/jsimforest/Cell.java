@@ -1,13 +1,8 @@
 package org.cesi.jsimforest;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.EnumMap;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.EnumMap;
 
 public class Cell implements CRUDInterface {
 

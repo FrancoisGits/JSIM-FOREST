@@ -7,17 +7,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="50.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cesi.jsimforest.ClientController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="anchor" prefHeight="50.0" prefWidth="200.0"
+            xmlns="http://javafx.com/javafx/15.0.1" fx:controller="org.cesi.jsimforest.ClientController">
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="200.0">
          <children>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
-                  <Insets right="25.0" />
+                  <Insets right="25.0"/>
                </HBox.margin>
                <image>
-                  <Image url="@../images/validate.png" />
+                  <Image url="@../images/validate.png"/>
                </image>
             </ImageView>
             <Label alignment="CENTER" text="Valide" textFill="#1c9e2d">
